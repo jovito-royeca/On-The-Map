@@ -25,14 +25,15 @@
       "scale" : "3x"
     },
     {
-      "idiom" : "iphone",
       "size" : "60x60",
+      "idiom" : "iphone",
+      "filename" : "OnTheMap_120-1.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "OnTheMap_120.png",
+      "filename" : "OnTheMap_180.png",
       "scale" : "3x"
     }
   ],

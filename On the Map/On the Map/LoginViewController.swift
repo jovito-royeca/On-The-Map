@@ -6,8 +6,38 @@
 //  Copyright © 2016 Jovito Royeca. All rights reserved.
 //
 
-import Cocoa
+import UIKit
 
 class LoginViewController: UIViewController {
 
+    @IBOutlet weak var usernameText: UITextField!
+    @IBOutlet weak var passwordText: UITextField!
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var signupLabel: UILabel!
+    @IBOutlet weak var facebookButton: UIButton!
+
+    
+    @IBAction func loginButtonAction(sender: UIButton) {
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
+        NetworkManager.sharedInstance().loginUdacity(usernameText.text!, password: passwordText.text!, success: { (results) in
+            performUIUpdatesOnMain {
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabBarController") as! UITabBarController
+                self.presentViewController(controller, animated: true, completion: nil)
+            }}, failure:  { (error) in
+                performUIUpdatesOnMain {
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
+            }
+        })
+    }
+    
+    @IBAction func facebookButtonAction(sender: UIButton) {
+        
+    }
+    
+    
+    @IBAction func signupLabelAction(sender: UITapGestureRecognizer) {
+    }
 }

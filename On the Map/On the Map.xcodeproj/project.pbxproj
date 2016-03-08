@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		83630AFF49CECC4435DFD192 /* libPods-On the MapTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9308C057D53178CFC3B29CAF /* libPods-On the MapTests.a */; };
 		8CB365201C8E76FA00725AAC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB3651F1C8E76FA00725AAC /* Constants.swift */; };
 		8CB365211C8E76FA00725AAC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB3651F1C8E76FA00725AAC /* Constants.swift */; };
 		8CB365221C8E76FA00725AAC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB3651F1C8E76FA00725AAC /* Constants.swift */; };
@@ -22,12 +23,21 @@
 		8CB365351C8E852C00725AAC /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB365341C8E852C00725AAC /* ListViewController.swift */; };
 		8CB365361C8E852C00725AAC /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB365341C8E852C00725AAC /* ListViewController.swift */; };
 		8CB365371C8E852C00725AAC /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB365341C8E852C00725AAC /* ListViewController.swift */; };
+		8CB365391C8EAAEC00725AAC /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB365381C8EAAEC00725AAC /* NetworkManager.swift */; };
+		8CB3653A1C8EAAEC00725AAC /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB365381C8EAAEC00725AAC /* NetworkManager.swift */; };
+		8CB3653B1C8EAAEC00725AAC /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB365381C8EAAEC00725AAC /* NetworkManager.swift */; };
+		8CB3653D1C8ED77900725AAC /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB3653C1C8ED77900725AAC /* GCDBlackBox.swift */; };
+		8CB3653E1C8ED77900725AAC /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB3653C1C8ED77900725AAC /* GCDBlackBox.swift */; };
+		8CB3653F1C8ED77900725AAC /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB3653C1C8ED77900725AAC /* GCDBlackBox.swift */; };
+		8CB365451C8EEF8B00725AAC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CB365441C8EEF8B00725AAC /* MapKit.framework */; };
 		8CF8381A1C8DB6E000FDE706 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF838191C8DB6E000FDE706 /* AppDelegate.swift */; };
 		8CF8381F1C8DB6E000FDE706 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CF8381D1C8DB6E000FDE706 /* Main.storyboard */; };
 		8CF838211C8DB6E000FDE706 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CF838201C8DB6E000FDE706 /* Assets.xcassets */; };
 		8CF838241C8DB6E000FDE706 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CF838221C8DB6E000FDE706 /* LaunchScreen.storyboard */; };
 		8CF8382F1C8DB6E000FDE706 /* On_the_MapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF8382E1C8DB6E000FDE706 /* On_the_MapTests.swift */; };
 		8CF8383A1C8DB6E000FDE706 /* On_the_MapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF838391C8DB6E000FDE706 /* On_the_MapUITests.swift */; };
+		DE6BF2C500F425EF647A006D /* libPods-On the Map.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 91BC4A72B55824E309F3E6C9 /* libPods-On the Map.a */; };
+		FF13B1DEC68B38F365D75BF5 /* libPods-On the MapUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5D85F2DBED388853D613E96 /* libPods-On the MapUITests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,11 +58,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		682FB8BC80126051880C8079 /* Pods-On the MapUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On the MapUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-On the MapUITests/Pods-On the MapUITests.release.xcconfig"; sourceTree = "<group>"; };
 		8CB3651F1C8E76FA00725AAC /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8CB365281C8E7FBC00725AAC /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8CB3652C1C8E819200725AAC /* StudentInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentInformation.swift; sourceTree = "<group>"; };
 		8CB365301C8E851300725AAC /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		8CB365341C8E852C00725AAC /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		8CB365381C8EAAEC00725AAC /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		8CB3653C1C8ED77900725AAC /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
+		8CB365401C8EEA4900725AAC /* On the Map-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "On the Map-Bridging-Header.h"; sourceTree = "<group>"; };
+		8CB365441C8EEF8B00725AAC /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		8CF838161C8DB6E000FDE706 /* On the Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On the Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CF838191C8DB6E000FDE706 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8CF8381E1C8DB6E000FDE706 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -65,6 +80,14 @@
 		8CF838351C8DB6E000FDE706 /* On the MapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "On the MapUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CF838391C8DB6E000FDE706 /* On_the_MapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = On_the_MapUITests.swift; sourceTree = "<group>"; };
 		8CF8383B1C8DB6E000FDE706 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		909E9C53B6EDC22B5E6799A6 /* Pods-On the MapUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On the MapUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-On the MapUITests/Pods-On the MapUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		91BC4A72B55824E309F3E6C9 /* libPods-On the Map.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-On the Map.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9308C057D53178CFC3B29CAF /* libPods-On the MapTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-On the MapTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		94F63B5B179F5C70ED022ADB /* Pods-On the MapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On the MapTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-On the MapTests/Pods-On the MapTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C64E120D468ABE4B136DDC0E /* Pods-On the MapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On the MapTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-On the MapTests/Pods-On the MapTests.release.xcconfig"; sourceTree = "<group>"; };
+		D6DE39E29B23BD91F45E5A96 /* Pods-On the Map.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On the Map.release.xcconfig"; path = "Pods/Target Support Files/Pods-On the Map/Pods-On the Map.release.xcconfig"; sourceTree = "<group>"; };
+		F5D85F2DBED388853D613E96 /* libPods-On the MapUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-On the MapUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8BC21BD1AE492C2DF2F1A98 /* Pods-On the Map.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On the Map.debug.xcconfig"; path = "Pods/Target Support Files/Pods-On the Map/Pods-On the Map.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +95,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CB365451C8EEF8B00725AAC /* MapKit.framework in Frameworks */,
+				DE6BF2C500F425EF647A006D /* libPods-On the Map.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83630AFF49CECC4435DFD192 /* libPods-On the MapTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,12 +112,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF13B1DEC68B38F365D75BF5 /* libPods-On the MapUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8B714B8A14AB5789EFBC1B3C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F8BC21BD1AE492C2DF2F1A98 /* Pods-On the Map.debug.xcconfig */,
+				D6DE39E29B23BD91F45E5A96 /* Pods-On the Map.release.xcconfig */,
+				94F63B5B179F5C70ED022ADB /* Pods-On the MapTests.debug.xcconfig */,
+				C64E120D468ABE4B136DDC0E /* Pods-On the MapTests.release.xcconfig */,
+				909E9C53B6EDC22B5E6799A6 /* Pods-On the MapUITests.debug.xcconfig */,
+				682FB8BC80126051880C8079 /* Pods-On the MapUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		8CB365231C8E7B0100725AAC /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +170,8 @@
 		8CB365271C8E7B2500725AAC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				8CB3653C1C8ED77900725AAC /* GCDBlackBox.swift */,
+				8CB365381C8EAAEC00725AAC /* NetworkManager.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -141,6 +183,8 @@
 				8CF8382D1C8DB6E000FDE706 /* On the MapTests */,
 				8CF838381C8DB6E000FDE706 /* On the MapUITests */,
 				8CF838171C8DB6E000FDE706 /* Products */,
+				8B714B8A14AB5789EFBC1B3C /* Pods */,
+				CC38277E41C16F5AE2E3D8C8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -163,6 +207,7 @@
 				8CB365251C8E7B1500725AAC /* Controller */,
 				8CF838251C8DB6E000FDE706 /* Info.plist */,
 				8CB365231C8E7B0100725AAC /* Model */,
+				8CB365401C8EEA4900725AAC /* On the Map-Bridging-Header.h */,
 				8CB365271C8E7B2500725AAC /* Utilities */,
 				8CB365241C8E7B0D00725AAC /* View */,
 			);
@@ -187,6 +232,17 @@
 			path = "On the MapUITests";
 			sourceTree = "<group>";
 		};
+		CC38277E41C16F5AE2E3D8C8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8CB365441C8EEF8B00725AAC /* MapKit.framework */,
+				91BC4A72B55824E309F3E6C9 /* libPods-On the Map.a */,
+				9308C057D53178CFC3B29CAF /* libPods-On the MapTests.a */,
+				F5D85F2DBED388853D613E96 /* libPods-On the MapUITests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -194,9 +250,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8CF8383E1C8DB6E000FDE706 /* Build configuration list for PBXNativeTarget "On the Map" */;
 			buildPhases = (
+				F1CA0EFCF9B0EAB625C5DCC4 /* Check Pods Manifest.lock */,
 				8CF838121C8DB6E000FDE706 /* Sources */,
 				8CF838131C8DB6E000FDE706 /* Frameworks */,
 				8CF838141C8DB6E000FDE706 /* Resources */,
+				7666F998F43B4502B3CE4712 /* Embed Pods Frameworks */,
+				9A3626EDB576914543EA2E93 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -211,9 +270,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8CF838411C8DB6E000FDE706 /* Build configuration list for PBXNativeTarget "On the MapTests" */;
 			buildPhases = (
+				5536ED1FCFB594FBE0B97C1B /* Check Pods Manifest.lock */,
 				8CF838261C8DB6E000FDE706 /* Sources */,
 				8CF838271C8DB6E000FDE706 /* Frameworks */,
 				8CF838281C8DB6E000FDE706 /* Resources */,
+				FAF3663C0E258199A68401F4 /* Embed Pods Frameworks */,
+				1217E4C70E24DDDD52BB7DDA /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -229,9 +291,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8CF838441C8DB6E000FDE706 /* Build configuration list for PBXNativeTarget "On the MapUITests" */;
 			buildPhases = (
+				98AD972FE30065F738FAD946 /* Check Pods Manifest.lock */,
 				8CF838311C8DB6E000FDE706 /* Sources */,
 				8CF838321C8DB6E000FDE706 /* Frameworks */,
 				8CF838331C8DB6E000FDE706 /* Resources */,
+				81E94B00867D0802C2399FBB /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -313,14 +377,139 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1217E4C70E24DDDD52BB7DDA /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-On the MapTests/Pods-On the MapTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5536ED1FCFB594FBE0B97C1B /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		7666F998F43B4502B3CE4712 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-On the Map/Pods-On the Map-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		81E94B00867D0802C2399FBB /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-On the MapUITests/Pods-On the MapUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		98AD972FE30065F738FAD946 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9A3626EDB576914543EA2E93 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-On the Map/Pods-On the Map-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F1CA0EFCF9B0EAB625C5DCC4 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		FAF3663C0E258199A68401F4 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-On the MapTests/Pods-On the MapTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8CF838121C8DB6E000FDE706 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CB3653D1C8ED77900725AAC /* GCDBlackBox.swift in Sources */,
 				8CB3652D1C8E819200725AAC /* StudentInformation.swift in Sources */,
 				8CB365291C8E7FBC00725AAC /* LoginViewController.swift in Sources */,
 				8CB365351C8E852C00725AAC /* ListViewController.swift in Sources */,
+				8CB365391C8EAAEC00725AAC /* NetworkManager.swift in Sources */,
 				8CF8381A1C8DB6E000FDE706 /* AppDelegate.swift in Sources */,
 				8CB365311C8E851300725AAC /* MapViewController.swift in Sources */,
 				8CB365201C8E76FA00725AAC /* Constants.swift in Sources */,
@@ -331,9 +520,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CB3653E1C8ED77900725AAC /* GCDBlackBox.swift in Sources */,
 				8CB3652E1C8E819200725AAC /* StudentInformation.swift in Sources */,
 				8CB3652A1C8E7FBC00725AAC /* LoginViewController.swift in Sources */,
 				8CB365361C8E852C00725AAC /* ListViewController.swift in Sources */,
+				8CB3653A1C8EAAEC00725AAC /* NetworkManager.swift in Sources */,
 				8CF8382F1C8DB6E000FDE706 /* On_the_MapTests.swift in Sources */,
 				8CB365321C8E851300725AAC /* MapViewController.swift in Sources */,
 				8CB365211C8E76FA00725AAC /* Constants.swift in Sources */,
@@ -344,9 +535,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CB3653F1C8ED77900725AAC /* GCDBlackBox.swift in Sources */,
 				8CB3652F1C8E819200725AAC /* StudentInformation.swift in Sources */,
 				8CB3652B1C8E7FBC00725AAC /* LoginViewController.swift in Sources */,
 				8CB365371C8E852C00725AAC /* ListViewController.swift in Sources */,
+				8CB3653B1C8EAAEC00725AAC /* NetworkManager.swift in Sources */,
 				8CF8383A1C8DB6E000FDE706 /* On_the_MapUITests.swift in Sources */,
 				8CB365331C8E851300725AAC /* MapViewController.swift in Sources */,
 				8CB365221C8E76FA00725AAC /* Constants.swift in Sources */,
@@ -471,28 +664,36 @@
 		};
 		8CF8383F1C8DB6E000FDE706 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F8BC21BD1AE492C2DF2F1A98 /* Pods-On the Map.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = "On the Map/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jovitoroyeca.On-the-Map";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "On the Map/On the Map-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		8CF838401C8DB6E000FDE706 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D6DE39E29B23BD91F45E5A96 /* Pods-On the Map.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = "On the Map/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jovitoroyeca.On-the-Map";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "On the Map/On the Map-Bridging-Header.h";
 			};
 			name = Release;
 		};
 		8CF838421C8DB6E000FDE706 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 94F63B5B179F5C70ED022ADB /* Pods-On the MapTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = "On the MapTests/Info.plist";
@@ -505,6 +706,7 @@
 		};
 		8CF838431C8DB6E000FDE706 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C64E120D468ABE4B136DDC0E /* Pods-On the MapTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = "On the MapTests/Info.plist";
@@ -517,6 +719,7 @@
 		};
 		8CF838451C8DB6E000FDE706 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 909E9C53B6EDC22B5E6799A6 /* Pods-On the MapUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "On the MapUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -529,6 +732,7 @@
 		};
 		8CF838461C8DB6E000FDE706 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 682FB8BC80126051880C8079 /* Pods-On the MapUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = "On the MapUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "BFB1C3FEB42A10121645B22204AFCE1F08FCB5BC",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "BFB1C3FEB42A10121645B22204AFCE1F08FCB5BC" : 0,
+    "8F0E4036E86239756A639845DD8D33C125293FFC" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "A59F431D-D926-4656-859F-40B8B6931C65",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "BFB1C3FEB42A10121645B22204AFCE1F08FCB5BC" : "On-The-Map\/",
+    "8F0E4036E86239756A639845DD8D33C125293FFC" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "On the Map",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "On the Map\/On the Map.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jovito-royeca\/Udacity-iOSDeveloper.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8F0E4036E86239756A639845DD8D33C125293FFC"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jovito-royeca\/On-The-Map.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "BFB1C3FEB42A10121645B22204AFCE1F08FCB5BC"
+    }
+  ]
+}
