@@ -30,6 +30,7 @@
 		8CB3653E1C8ED77900725AAC /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB3653C1C8ED77900725AAC /* GCDBlackBox.swift */; };
 		8CB3653F1C8ED77900725AAC /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB3653C1C8ED77900725AAC /* GCDBlackBox.swift */; };
 		8CB365451C8EEF8B00725AAC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CB365441C8EEF8B00725AAC /* MapKit.framework */; };
+		8CB365471C8F16EE00725AAC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CB365461C8F16EE00725AAC /* CoreLocation.framework */; };
 		8CF8381A1C8DB6E000FDE706 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF838191C8DB6E000FDE706 /* AppDelegate.swift */; };
 		8CF8381F1C8DB6E000FDE706 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CF8381D1C8DB6E000FDE706 /* Main.storyboard */; };
 		8CF838211C8DB6E000FDE706 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CF838201C8DB6E000FDE706 /* Assets.xcassets */; };
@@ -68,6 +69,7 @@
 		8CB3653C1C8ED77900725AAC /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
 		8CB365401C8EEA4900725AAC /* On the Map-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "On the Map-Bridging-Header.h"; sourceTree = "<group>"; };
 		8CB365441C8EEF8B00725AAC /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		8CB365461C8F16EE00725AAC /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		8CF838161C8DB6E000FDE706 /* On the Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On the Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CF838191C8DB6E000FDE706 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8CF8381E1C8DB6E000FDE706 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CB365471C8F16EE00725AAC /* CoreLocation.framework in Frameworks */,
 				8CB365451C8EEF8B00725AAC /* MapKit.framework in Frameworks */,
 				DE6BF2C500F425EF647A006D /* libPods-On the Map.a in Frameworks */,
 			);
@@ -235,6 +238,7 @@
 		CC38277E41C16F5AE2E3D8C8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8CB365461C8F16EE00725AAC /* CoreLocation.framework */,
 				8CB365441C8EEF8B00725AAC /* MapKit.framework */,
 				91BC4A72B55824E309F3E6C9 /* libPods-On the Map.a */,
 				9308C057D53178CFC3B29CAF /* libPods-On the MapTests.a */,

@@ -20,7 +20,7 @@ class LoginViewController: UIViewController {
     @IBAction func loginButtonAction(sender: UIButton) {
         MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
-        NetworkManager.sharedInstance().loginUdacity(usernameText.text!, password: passwordText.text!, success: { (results) in
+        NetworkManager.sharedInstance().udacityLogin(usernameText.text!, password: passwordText.text!, success: { (results) in
             performUIUpdatesOnMain {
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
                 let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabBarController") as! UITabBarController

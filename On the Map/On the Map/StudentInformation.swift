@@ -9,21 +9,50 @@
 import Foundation
 
 struct StudentInformation {
-    var name:String?
+    var createdAt:NSDate?
+    var firstName:String?
+    var lastName:String?
     var latitude:Double?
     var longitude:Double?
-    var link:String?
+    var mapString:String?
+    var mediaURL:NSURL?
+    var objectId:String?
+    var uniqueKey:String?
+    var updatedAt:NSDate?
     
     init(dictionary: [String:AnyObject]) {
-        name = dictionary["name"] as! String
-        latitude = dictionary["latitude"] as! Double
-        longitude = dictionary["longitude"] as! Double
-        link = dictionary["link"] as! String
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZZZZZ"
         
-//        if let releaseDateString = dictionary[TMDBClient.JSONResponseKeys.MovieReleaseDate] as? String where releaseDateString.isEmpty == false {
-//            releaseYear = releaseDateString.substringToIndex(releaseDateString.startIndex.advancedBy(4))
-//        } else {
-//            releaseYear = ""
-//        }
+        if let createdAt = dictionary["createdAt"] as? String {
+            self.createdAt = formatter.dateFromString(createdAt)
+        }
+        if let firstName = dictionary["firstName"] as? String {
+            self.firstName = firstName
+        }
+        if let lastName = dictionary["lastName"] as? String {
+            self.lastName = lastName
+        }
+        if let latitude = dictionary["latitude"] as? Double {
+            self.latitude = latitude
+        }
+        if let longitude = dictionary["longitude"] as? Double {
+            self.longitude = longitude
+        }
+        if let mapString = dictionary["mapString"] as? String {
+            self.mapString = mapString
+        }
+        if let mediaURL = dictionary["mediaURL"] as? String {
+            self.mediaURL = NSURL(string: mediaURL)
+        }
+        if let objectId = dictionary["objectId"] as? String {
+            self.objectId = objectId
+        }
+        if let uniqueKey = dictionary["uniqueKey"] as? String {
+            self.uniqueKey = uniqueKey
+        }
+        if let updatedAt = dictionary["updatedAt"] as? String {
+            self.updatedAt = formatter.dateFromString(updatedAt)
+        }
     }
 }

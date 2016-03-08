@@ -10,39 +10,44 @@ import Foundation
 
 class NetworkManager: NSObject {
     
-    var students = [StudentInformation]()
+    var students = [String:StudentInformation]()
     var userID:String?
     var sessionID:String?
     var sessionExpiration:NSDate?
     
-    func loginUdacity(username: String, password: String, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+    func udacityLogin(username: String, password: String, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let httpMethod = Constants.Http.ActionPost
         let urlString = "\(Constants.Udacity.ApiScheme)://\(Constants.Udacity.ApiHost)/\(Constants.Udacity.ApiPath)/\(Constants.UdacityMethods.Session)"
         let headers = [Constants.Http.FieldAccept: Constants.Http.FieldAcceptValue,
                        Constants.Http.FieldContentType: Constants.Http.FieldContentTypetValue]
-        
         let body = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}"
         
-        let parser = { (result: AnyObject!) in
-            if let account = result["account"] as? [String: AnyObject] {
+        let parser = { (results: AnyObject!) in
+            // weird Xcode Swift error
+            // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
+            if let account = results["account"] as? [String: AnyObject] {
                 self.userID = account["key"] as? String
             } else {
                 self.fail("account key not found", failure: failure)
             }
             
-            if let session = result["session"] as? [String: AnyObject] {
+            // weird Xcode Swift error
+            // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
+            if let session = results["session"] as? [String: AnyObject] {
                 self.sessionID = session["id"] as? String
             } else {
                 self.fail("session key not found", failure: failure)
             }
             
-            success(results: result)
+            self.parseGetStudentLocations(success, failure: failure)
+            
+//            success(results: results)
         }
         
         self .exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: body, dataOffset: Constants.Udacity.DataOffset, success: parser, failure: failure)
     }
     
-    func logoutUdacity(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+    func udacityLogout(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let httpMethod = Constants.Http.ActionDelete
         let urlString = "\(Constants.Udacity.ApiScheme)://\(Constants.Udacity.ApiHost)/\(Constants.Udacity.ApiPath)/\(Constants.UdacityMethods.Session)"
         var values = [String: String]()
@@ -59,7 +64,39 @@ class NetworkManager: NSObject {
             values["X-XSRF-TOKEN"] = xsrfCookie.value
         }
         
-        self .exec(httpMethod, urlString: urlString, headers: nil, parameters: nil, values: values, body: nil, dataOffset: Constants.Udacity.DataOffset, success: success, failure: failure)
+        
+        let parser = { (results: AnyObject!) in
+            self.students = [String:StudentInformation]()
+            self.userID = nil
+            self.sessionID = nil
+            self.sessionExpiration = nil
+            
+            success(results: results)
+        }
+        
+        self .exec(httpMethod, urlString: urlString, headers: nil, parameters: nil, values: values, body: nil, dataOffset: Constants.Udacity.DataOffset, success: parser, failure: failure)
+    }
+    
+    func parseGetStudentLocations(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        let httpMethod = Constants.Http.ActionGet
+        let urlString = "\(Constants.Parse.ApiScheme)://\(Constants.Parse.ApiHost)/\(Constants.Parse.ApiPath)/\(Constants.ParseMethods.StudentLocation)"
+        let headers = [Constants.Parse.FieldAppID: Constants.Parse.FieldAppIDValue,
+            Constants.Parse.FieldAppKey: Constants.Parse.FieldAppKeyValue]
+        let parameters = [Constants.Parse.SortKey: Constants.Parse.SortValue]
+        
+        let parser = { (results: AnyObject!) in
+            if let r = results["results"] as? [[String:AnyObject]] {
+                for dict in r {
+                    if let objectId = dict["objectId"] as? String {
+                        self.students[objectId] = StudentInformation(dictionary: dict)
+                    }
+                }
+                success(results: results)
+            }
+        }
+        
+        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: nil, dataOffset: 0, success: parser, failure: failure)
+        
     }
     
     func exec(httpMethod: String!,
@@ -69,7 +106,7 @@ class NetworkManager: NSObject {
                   values: [String:AnyObject]?,
                     body: String?,
               dataOffset: Int,
-                 success: (result: AnyObject!) -> Void,
+                 success: (results: AnyObject!) -> Void,
                  failure: (error: NSError?) -> Void) -> Void {
         
         let components = NSURLComponents(string: urlString)!
@@ -135,7 +172,7 @@ class NetworkManager: NSObject {
                 
             do {
                 parsedResult = try NSJSONSerialization.JSONObjectWithData(newData!, options: .AllowFragments)
-                success(result: parsedResult)
+                success(results: parsedResult)
             } catch {
                 self.fail("Could not parse the data as JSON: '\(newData!)'", failure: failure)
             }
