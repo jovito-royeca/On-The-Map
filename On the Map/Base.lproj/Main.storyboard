@@ -45,12 +45,12 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1qb-cf-JjN">
                                 <rect key="frame" x="-25" y="-30" width="97" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AJC-KN-VON">
                                 <rect key="frame" x="-25" y="-30" width="97" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TAl-HK-b7D">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
@@ -374,6 +374,106 @@
             </objects>
             <point key="canvasLocation" x="1002" y="548"/>
         </scene>
+        <!--Location Finder View Controller-->
+        <scene sceneID="onc-7O-0fM">
+            <objects>
+                <viewController storyboardIdentifier="LocationFinderViewController" hidesBottomBarWhenPushed="YES" id="xsV-85-DRj" customClass="LocationFinderViewController" customModule="On_the_Map" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VKs-Nk-aOp"/>
+                        <viewControllerLayoutGuide type="bottom" id="tMq-bF-zZe"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ar4-yG-MdB">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" placeholder="Enter Address To Find Here" showsSearchResultsButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jql-VS-UF9">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="search"/>
+                            </searchBar>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="mWc-St-zkr">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                            </mapView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a Link to Share Here" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EMj-NE-fYT">
+                                <rect key="frame" x="-25" y="-30" width="97" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="done"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="jql-VS-UF9" firstAttribute="bottom" secondItem="mWc-St-zkr" secondAttribute="top" id="5qv-Jk-a6U"/>
+                            <constraint firstItem="EMj-NE-fYT" firstAttribute="leading" secondItem="ar4-yG-MdB" secondAttribute="leadingMargin" id="DNX-eU-dM1"/>
+                            <constraint firstItem="mWc-St-zkr" firstAttribute="bottom" secondItem="tMq-bF-zZe" secondAttribute="top" id="EGQ-ii-g6U"/>
+                            <constraint firstItem="jql-VS-UF9" firstAttribute="leading" secondItem="mWc-St-zkr" secondAttribute="leading" id="TYm-6Q-zox"/>
+                            <constraint firstItem="jql-VS-UF9" firstAttribute="leading" secondItem="ar4-yG-MdB" secondAttribute="leading" id="Va6-RF-ZKq"/>
+                            <constraint firstItem="jql-VS-UF9" firstAttribute="trailing" secondItem="mWc-St-zkr" secondAttribute="trailing" id="f59-vd-01o"/>
+                            <constraint firstItem="jql-VS-UF9" firstAttribute="centerX" secondItem="EMj-NE-fYT" secondAttribute="centerX" id="k4i-bb-hjA"/>
+                            <constraint firstItem="jql-VS-UF9" firstAttribute="top" secondItem="VKs-Nk-aOp" secondAttribute="bottom" id="lJP-Eb-gek"/>
+                            <constraint firstAttribute="bottom" secondItem="EMj-NE-fYT" secondAttribute="bottom" constant="20" symbolic="YES" id="tvI-Yc-L3j"/>
+                            <constraint firstAttribute="trailing" secondItem="jql-VS-UF9" secondAttribute="trailing" id="yFh-9Y-bE5"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="jql-VS-UF9"/>
+                                <exclude reference="mWc-St-zkr"/>
+                                <exclude reference="EMj-NE-fYT"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="5qv-Jk-a6U"/>
+                                <exclude reference="TYm-6Q-zox"/>
+                                <exclude reference="Va6-RF-ZKq"/>
+                                <exclude reference="f59-vd-01o"/>
+                                <exclude reference="k4i-bb-hjA"/>
+                                <exclude reference="lJP-Eb-gek"/>
+                                <exclude reference="yFh-9Y-bE5"/>
+                                <exclude reference="EGQ-ii-g6U"/>
+                                <exclude reference="DNX-eU-dM1"/>
+                                <exclude reference="tvI-Yc-L3j"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="jql-VS-UF9"/>
+                                <include reference="mWc-St-zkr"/>
+                                <include reference="EMj-NE-fYT"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="5qv-Jk-a6U"/>
+                                <include reference="TYm-6Q-zox"/>
+                                <include reference="Va6-RF-ZKq"/>
+                                <include reference="f59-vd-01o"/>
+                                <include reference="k4i-bb-hjA"/>
+                                <include reference="lJP-Eb-gek"/>
+                                <include reference="yFh-9Y-bE5"/>
+                                <include reference="EGQ-ii-g6U"/>
+                                <include reference="DNX-eU-dM1"/>
+                                <include reference="tvI-Yc-L3j"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" id="ihM-qf-90G">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="2XZ-Rr-DVj">
+                            <connections>
+                                <action selector="cancelAction:" destination="xsV-85-DRj" id="72h-EB-SQ2"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Submit" id="7BD-Zt-gqI">
+                            <connections>
+                                <action selector="submitAction:" destination="xsV-85-DRj" id="g7g-jt-1lw"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="linkTextField" destination="EMj-NE-fYT" id="wv6-df-SnO"/>
+                        <outlet property="mapView" destination="mWc-St-zkr" id="QNJ-mH-fFX"/>
+                        <outlet property="searchBar" destination="jql-VS-UF9" id="oVE-1p-83Y"/>
+                        <outlet property="submitButton" destination="7BD-Zt-gqI" id="cea-6z-uas"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FsA-7V-I1i" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4653" y="527"/>
+        </scene>
         <!--Map-->
         <scene sceneID="X1z-4N-MDI">
             <objects>
@@ -411,6 +511,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Js0-ZN-gS8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1927.5" y="881"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="zUJ-zh-udo">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="med-f8-tkQ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="blo-Ro-bwS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="xsV-85-DRj" kind="relationship" relationship="rootViewController" id="Nok-UW-ZMn"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dxz-yr-5PT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3735" y="527"/>
         </scene>
     </scenes>
     <resources>

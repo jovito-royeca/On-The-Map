@@ -18,7 +18,7 @@ struct Constants {
         static let FieldAccept             = "Accept"
         static let FieldAcceptValue        = "application/json"
         static let FieldContentType        = "Content-Type"
-        static let FieldContentTypetValue  = "application/json"
+        static let FieldContentTypeValue  = "application/json"
     }
     
     
@@ -26,7 +26,7 @@ struct Constants {
     struct Udacity {
         static let ApiScheme  = "https"
         static let ApiHost    = "www.udacity.com"
-        static let ApiPath    = "/api"
+        static let ApiPath    = "api"
         static let DataOffset = 5
     }
     
@@ -46,18 +46,32 @@ struct Constants {
     struct Parse {
         static let ApiScheme         = "https"
         static let ApiHost           = "api.parse.com"
-        static let ApiPath           = "/1/classes"
+        static let ApiPath           = "1/classes"
         static let FieldAppID        = "X-Parse-Application-Id"
         static let FieldAppIDValue   = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
         static let FieldAppKey       = "X-Parse-REST-API-Key"
         static let FieldAppKeyValue  = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
         static let InitialLimit      = 100
         static let SortKey           = "order"
-        static let SortValue         = "updatedAt"
+        static let SortValue         = "-updatedAt"
     }
     
     // MARK: Parse Methods
     struct ParseMethods {
         static let StudentLocation  = "StudentLocation"
+    }
+    
+    // MARK: Parse JSON Keys
+    struct ParseJSONKeys {
+        static let CreatedAt = "createdAt"
+        static let FirstName = "firstName"
+        static let LastName  = "lastName"
+        static let Latitude  = "latitude"
+        static let Longitude = "longitude"
+        static let MapString = "mapString"
+        static let MediaURL  = "mediaURL"
+        static let ObjectId  = "objectId"
+        static let UniqueKey = "uniqueKey"
+        static let UpdatedAt = "updatedAt"
     }
 }

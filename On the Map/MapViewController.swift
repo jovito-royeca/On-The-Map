@@ -37,22 +37,38 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func refreshAction(sender: UIBarButtonItem) {
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
+        NetworkManager.sharedInstance().parseGetStudentLocations({ (results) in
+            performUIUpdatesOnMain {
+                self.students = NetworkManager.sharedInstance().students
+                self.addPinsToMap()
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                
+            }}, failure: { (error) in
+                performUIUpdatesOnMain {
+                    self.students = NetworkManager.sharedInstance().students
+                    self.addPinsToMap()
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
+                }
+        })
     }
     
     
     // MARK: Overrides
     override func viewDidLoad() {
         mapView.delegate = self
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
-        students = [StudentInformation]()
-        for (_,value) in NetworkManager.sharedInstance().students {
-            students!.append(value)
-        }
-        
+        students = NetworkManager.sharedInstance().students
         addPinsToMap()
     }
     
+    // MARK: Custom methods
     func addPinsToMap() {
         // remove previous pins
         for ann in mapView.annotations {
@@ -60,14 +76,20 @@ class MapViewController: UIViewController {
         }
         
         for student in students! {
-            let location = CLLocationCoordinate2DMake(student.latitude!, student.longitude!)
-            let point = MKPointAnnotation()
-            point.coordinate = location
-            point.title = "\(student.firstName!) \(student.lastName!)"
-            if let mediaURL = student.mediaURL {
-                point.subtitle = "\(mediaURL)"
+            if let latitude = student.latitude, let longitude = student.longitude {
+                let location = CLLocationCoordinate2DMake(latitude, longitude)
+                let point = MKPointAnnotation()
+                point.coordinate = location
+                point.title = "\(student.firstName!) \(student.lastName!)"
+                if let mediaURL = student.mediaURL {
+                    point.subtitle = mediaURL.absoluteString
+                }
+                mapView.addAnnotation(point)
+                
+                if student.uniqueKey == NetworkManager.sharedInstance().currentStudent?.uniqueKey {
+                    mapView.selectAnnotation(point, animated: false)
+                }
             }
-            mapView.addAnnotation(point)
         }
     }
 }

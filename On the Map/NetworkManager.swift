@@ -7,23 +7,24 @@
 //
 
 import Foundation
+import CoreLocation
 
 class NetworkManager: NSObject {
     
-    var students = [String:StudentInformation]()
+    var students = [StudentInformation]()
+    var currentStudent:StudentInformation?
     var userID:String?
     var sessionID:String?
-    var sessionExpiration:NSDate?
     
     func udacityLogin(username: String, password: String, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let httpMethod = Constants.Http.ActionPost
         let urlString = "\(Constants.Udacity.ApiScheme)://\(Constants.Udacity.ApiHost)/\(Constants.Udacity.ApiPath)/\(Constants.UdacityMethods.Session)"
         let headers = [Constants.Http.FieldAccept: Constants.Http.FieldAcceptValue,
-                       Constants.Http.FieldContentType: Constants.Http.FieldContentTypetValue]
+                       Constants.Http.FieldContentType: Constants.Http.FieldContentTypeValue]
         let body = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}"
         
         let parser = { (results: AnyObject!) in
-            // weird Xcode Swift error
+            // weird Xcode Swift warning
             // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
             if let account = results["account"] as? [String: AnyObject] {
                 self.userID = account["key"] as? String
@@ -31,7 +32,7 @@ class NetworkManager: NSObject {
                 self.fail("account key not found", failure: failure)
             }
             
-            // weird Xcode Swift error
+            // weird Xcode Swift warning
             // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
             if let session = results["session"] as? [String: AnyObject] {
                 self.sessionID = session["id"] as? String
@@ -66,10 +67,9 @@ class NetworkManager: NSObject {
         
         
         let parser = { (results: AnyObject!) in
-            self.students = [String:StudentInformation]()
+            self.students = [StudentInformation]()
             self.userID = nil
             self.sessionID = nil
-            self.sessionExpiration = nil
             
             success(results: results)
         }
@@ -85,10 +85,20 @@ class NetworkManager: NSObject {
         let parameters = [Constants.Parse.SortKey: Constants.Parse.SortValue]
         
         let parser = { (results: AnyObject!) in
+            self.students.removeAll()
+            
+            // weird Xcode Swift warning
+            // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
             if let r = results["results"] as? [[String:AnyObject]] {
                 for dict in r {
-                    if let objectId = dict["objectId"] as? String {
-                        self.students[objectId] = StudentInformation(dictionary: dict)
+                    let student = StudentInformation(dictionary: dict)
+                    self.students.append(student)
+                 
+                    // let's store the currently login user from the results
+                    if let uniqueKey = dict[Constants.ParseJSONKeys.UniqueKey] as? String, userID = self.userID {
+                        if uniqueKey == userID {
+                            self.currentStudent = student
+                        }
                     }
                 }
                 success(results: results)
@@ -97,6 +107,23 @@ class NetworkManager: NSObject {
         
         self .exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: parser, failure: failure)
         
+    }
+    
+    func parseCreateStudentLocation(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        
+    }
+    
+    func parseUpdateStudentLocation(location: CLLocationCoordinate2D, mediaURL: String, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        let httpMethod = Constants.Http.ActionPost
+        let urlString = "\(Constants.Parse.ApiScheme)://\(Constants.Parse.ApiHost)/\(Constants.Parse.ApiPath)/\(Constants.ParseMethods.StudentLocation)/\(self.currentStudent!.objectId!)"
+        let headers = [Constants.Parse.FieldAppID: Constants.Parse.FieldAppIDValue,
+            Constants.Parse.FieldAppKey: Constants.Parse.FieldAppKeyValue,
+            Constants.Http.FieldContentType: Constants.Http.FieldContentTypeValue]
+        let mapString = self.currentStudent!.mapString != nil ? self.currentStudent!.mapString! : ""
+        
+        let body = "{\"uniqueKey\": \"\(self.currentStudent!.uniqueKey!)\", \"firstName\": \"\(self.currentStudent!.firstName!)\", \"lastName\": \"\(self.currentStudent!.lastName!)\", \"mapString\": \"\(mapString)\", \"mediaURL\": \"\(mediaURL)\", \"latitude\": \(location.latitude), \"longitude\": \(location.longitude)}"
+
+        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
     }
     
     func exec(httpMethod: String!,
@@ -148,7 +175,7 @@ class NetworkManager: NSObject {
         let task = session.dataTaskWithRequest(request) { data, response, error in
 
             guard (error == nil) else {
-                self.fail("There was an error with your request: \(error)", failure: failure)
+                self.fail(error?.userInfo[NSLocalizedDescriptionKey] as! String, failure: failure)
                 return
             }
             
@@ -177,7 +204,7 @@ class NetworkManager: NSObject {
                     parsedResult = try NSJSONSerialization.JSONObjectWithData(newData!, options: .AllowFragments)
                     success(results: parsedResult)
                 } catch {
-                    self.fail("Could not parse the data as JSON: '\(newData!)'", failure: failure)
+                    self.fail("Could not parse the data as JSON.", failure: failure)
                 }
             } else {
                 success(results: newData)

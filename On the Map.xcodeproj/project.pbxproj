@@ -31,6 +31,9 @@
 		8CB3653F1C8ED77900725AAC /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB3653C1C8ED77900725AAC /* GCDBlackBox.swift */; };
 		8CB365451C8EEF8B00725AAC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CB365441C8EEF8B00725AAC /* MapKit.framework */; };
 		8CB365471C8F16EE00725AAC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CB365461C8F16EE00725AAC /* CoreLocation.framework */; };
+		8CE3B4F31C9011EC0083189A /* LocationFinderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE3B4F21C9011EC0083189A /* LocationFinderViewController.swift */; };
+		8CE3B4F41C9011EC0083189A /* LocationFinderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE3B4F21C9011EC0083189A /* LocationFinderViewController.swift */; };
+		8CE3B4F51C9011EC0083189A /* LocationFinderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE3B4F21C9011EC0083189A /* LocationFinderViewController.swift */; };
 		8CF8381A1C8DB6E000FDE706 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF838191C8DB6E000FDE706 /* AppDelegate.swift */; };
 		8CF8381F1C8DB6E000FDE706 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CF8381D1C8DB6E000FDE706 /* Main.storyboard */; };
 		8CF838211C8DB6E000FDE706 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CF838201C8DB6E000FDE706 /* Assets.xcassets */; };
@@ -70,6 +73,7 @@
 		8CB365401C8EEA4900725AAC /* On the Map-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "On the Map-Bridging-Header.h"; sourceTree = "<group>"; };
 		8CB365441C8EEF8B00725AAC /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		8CB365461C8F16EE00725AAC /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		8CE3B4F21C9011EC0083189A /* LocationFinderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationFinderViewController.swift; sourceTree = "<group>"; };
 		8CF838161C8DB6E000FDE706 /* On the Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On the Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CF838191C8DB6E000FDE706 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8CF8381E1C8DB6E000FDE706 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -153,9 +157,10 @@
 		8CB365251C8E7B1500725AAC /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				8CB365341C8E852C00725AAC /* ListViewController.swift */,
+				8CE3B4F21C9011EC0083189A /* LocationFinderViewController.swift */,
 				8CB365281C8E7FBC00725AAC /* LoginViewController.swift */,
 				8CB365301C8E851300725AAC /* MapViewController.swift */,
-				8CB365341C8E852C00725AAC /* ListViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -511,6 +516,7 @@
 			files = (
 				8CB3653D1C8ED77900725AAC /* GCDBlackBox.swift in Sources */,
 				8CB3652D1C8E819200725AAC /* StudentInformation.swift in Sources */,
+				8CE3B4F31C9011EC0083189A /* LocationFinderViewController.swift in Sources */,
 				8CB365291C8E7FBC00725AAC /* LoginViewController.swift in Sources */,
 				8CB365351C8E852C00725AAC /* ListViewController.swift in Sources */,
 				8CB365391C8EAAEC00725AAC /* NetworkManager.swift in Sources */,
@@ -526,6 +532,7 @@
 			files = (
 				8CB3653E1C8ED77900725AAC /* GCDBlackBox.swift in Sources */,
 				8CB3652E1C8E819200725AAC /* StudentInformation.swift in Sources */,
+				8CE3B4F41C9011EC0083189A /* LocationFinderViewController.swift in Sources */,
 				8CB3652A1C8E7FBC00725AAC /* LoginViewController.swift in Sources */,
 				8CB365361C8E852C00725AAC /* ListViewController.swift in Sources */,
 				8CB3653A1C8EAAEC00725AAC /* NetworkManager.swift in Sources */,
@@ -541,6 +548,7 @@
 			files = (
 				8CB3653F1C8ED77900725AAC /* GCDBlackBox.swift in Sources */,
 				8CB3652F1C8E819200725AAC /* StudentInformation.swift in Sources */,
+				8CE3B4F51C9011EC0083189A /* LocationFinderViewController.swift in Sources */,
 				8CB3652B1C8E7FBC00725AAC /* LoginViewController.swift in Sources */,
 				8CB365371C8E852C00725AAC /* ListViewController.swift in Sources */,
 				8CB3653B1C8EAAEC00725AAC /* NetworkManager.swift in Sources */,
@@ -678,6 +686,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "On the Map/On the Map-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -692,6 +701,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jovitoroyeca.On-the-Map";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "On the Map/On the Map-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

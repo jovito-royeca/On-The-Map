@@ -32,24 +32,57 @@ class ListViewController: UIViewController {
     
     
     @IBAction func pinAction(sender: UIBarButtonItem) {
-        
+        if let currentStudent = NetworkManager.sharedInstance().currentStudent {
+            let message = "User \"\(currentStudent.firstName!) \(currentStudent.lastName!)\" Has Already Posted a Student Location. Would You Like to Overwrite Their Location?"
+            
+            let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil);
+            alertController.addAction(cancelAction)
+            
+            let overwriteAction = UIAlertAction(title: "Overwrite", style: .Destructive) { (action) in
+                let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LocationFinderViewController") as! LocationFinderViewController
+                self.navigationController!.pushViewController(controller, animated: true)
+            }
+            alertController.addAction(overwriteAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
     }
     
     
     @IBAction func refreshAction(sender: UIBarButtonItem) {
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
+        NetworkManager.sharedInstance().parseGetStudentLocations({ (results) in
+            performUIUpdatesOnMain {
+                self.students = NetworkManager.sharedInstance().students
+                self.tabeView.reloadData()
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                
+            }}, failure: { (error) in
+                performUIUpdatesOnMain {
+                    self.students = NetworkManager.sharedInstance().students
+                    self.tabeView.reloadData()
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
+                }
+        })
     }
     
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tabeView!.dataSource = self
         tabeView!.delegate = self
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
-        students = [StudentInformation]()
-        for (_,value) in NetworkManager.sharedInstance().students {
-            students!.append(value)
-        }
+        students = NetworkManager.sharedInstance().students
+        tabeView.reloadData()
     }
 }
 
@@ -66,7 +99,7 @@ extension ListViewController: UITableViewDataSource {
         /* Set cell defaults */
         cell.textLabel!.text = "\(student.firstName!) \(student.lastName!)"
         if let mediaURL = student.mediaURL {
-            cell.detailTextLabel!.text = "\(mediaURL)"
+            cell.detailTextLabel!.text = mediaURL.absoluteString
         } else {
             cell.detailTextLabel!.text = nil
         }
@@ -84,7 +117,11 @@ extension ListViewController: UITableViewDelegate {
         let student = students![indexPath.row]
         
         if let url = student.mediaURL {
-            UIApplication.sharedApplication().openURL(url)
+            if let newUrl = NSURL(string: url.absoluteString) {
+                UIApplication.sharedApplication().openURL(newUrl)
+            } else {
+                JJJUtil.alertWithTitle("Error", andMessage:"Invalid URL: \(url.absoluteString)")
+            }
         }
     }
 }
