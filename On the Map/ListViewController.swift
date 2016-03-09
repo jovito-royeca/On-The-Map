@@ -40,13 +40,11 @@ class ListViewController: UIViewController {
         
     }
     
+    // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
         tabeView!.dataSource = self
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+        tabeView!.delegate = self
         
         students = [StudentInformation]()
         for (_,value) in NetworkManager.sharedInstance().students {
@@ -55,22 +53,38 @@ class ListViewController: UIViewController {
     }
 }
 
+// MARK: UITableViewDataSource
 extension ListViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
+        let student = students![indexPath.row]
         
         /* Get cell type */
         let cellReuseIdentifier = "ListTableViewCell"
-        let student = students![indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier(cellReuseIdentifier) as UITableViewCell!
         
         /* Set cell defaults */
         cell.textLabel!.text = "\(student.firstName!) \(student.lastName!)"
-        cell.detailTextLabel!.text = "\(student.mapString!)"
+        if let mediaURL = student.mediaURL {
+            cell.detailTextLabel!.text = "\(mediaURL)"
+        } else {
+            cell.detailTextLabel!.text = nil
+        }
         
         return cell
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return students!.count
+    }
+}
+
+extension ListViewController: UITableViewDelegate {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let student = students![indexPath.row]
+        
+        if let url = student.mediaURL {
+            UIApplication.sharedApplication().openURL(url)
+        }
     }
 }

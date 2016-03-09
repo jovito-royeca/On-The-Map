@@ -44,7 +44,7 @@ class NetworkManager: NSObject {
 //            success(results: results)
         }
         
-        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: body, dataOffset: Constants.Udacity.DataOffset, success: parser, failure: failure)
+        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: body, dataOffset: Constants.Udacity.DataOffset, isJSON: true, success: parser, failure: failure)
     }
     
     func udacityLogout(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
@@ -74,7 +74,7 @@ class NetworkManager: NSObject {
             success(results: results)
         }
         
-        self .exec(httpMethod, urlString: urlString, headers: nil, parameters: nil, values: values, body: nil, dataOffset: Constants.Udacity.DataOffset, success: parser, failure: failure)
+        self .exec(httpMethod, urlString: urlString, headers: nil, parameters: nil, values: values, body: nil, dataOffset: Constants.Udacity.DataOffset, isJSON: true, success: parser, failure: failure)
     }
     
     func parseGetStudentLocations(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
@@ -95,7 +95,7 @@ class NetworkManager: NSObject {
             }
         }
         
-        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: nil, dataOffset: 0, success: parser, failure: failure)
+        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: parser, failure: failure)
         
     }
     
@@ -106,6 +106,7 @@ class NetworkManager: NSObject {
                   values: [String:AnyObject]?,
                     body: String?,
               dataOffset: Int,
+                  isJSON: Bool,
                  success: (results: AnyObject!) -> Void,
                  failure: (error: NSError?) -> Void) -> Void {
         
@@ -161,7 +162,7 @@ class NetworkManager: NSObject {
                 return
             }
          
-            var parsedResult: AnyObject!
+            
             var newData: NSData?
             
             if dataOffset > 0 {
@@ -169,12 +170,17 @@ class NetworkManager: NSObject {
             } else {
                 newData = data
             }
-                
-            do {
-                parsedResult = try NSJSONSerialization.JSONObjectWithData(newData!, options: .AllowFragments)
-                success(results: parsedResult)
-            } catch {
-                self.fail("Could not parse the data as JSON: '\(newData!)'", failure: failure)
+            
+            if isJSON {
+                var parsedResult: AnyObject!
+                do {
+                    parsedResult = try NSJSONSerialization.JSONObjectWithData(newData!, options: .AllowFragments)
+                    success(results: parsedResult)
+                } catch {
+                    self.fail("Could not parse the data as JSON: '\(newData!)'", failure: failure)
+                }
+            } else {
+                success(results: newData)
             }
         }
         

@@ -14,6 +14,7 @@ class MapViewController: UIViewController {
 
     // Mark: Properties
     @IBOutlet weak var mapView: MKMapView!
+    var students:[StudentInformation]?
     
     // MARK: Actions
     @IBAction func logoutAction(sender: UIBarButtonItem) {
@@ -39,23 +40,60 @@ class MapViewController: UIViewController {
         
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-
+    
+    // MARK: Overrides
+    override func viewDidLoad() {
+        mapView.delegate = self
+        
+        students = [StudentInformation]()
+        for (_,value) in NetworkManager.sharedInstance().students {
+            students!.append(value)
+        }
+        
+        addPinsToMap()
+    }
+    
+    func addPinsToMap() {
         // remove previous pins
         for ann in mapView.annotations {
             mapView.removeAnnotation(ann)
         }
         
-        for (_,value) in NetworkManager.sharedInstance().students {
-            let location = CLLocationCoordinate2DMake(value.latitude!, value.longitude!)
+        for student in students! {
+            let location = CLLocationCoordinate2DMake(student.latitude!, student.longitude!)
             let point = MKPointAnnotation()
             point.coordinate = location
-            point.title = "\(value.firstName!) \(value.lastName!)"
+            point.title = "\(student.firstName!) \(student.lastName!)"
+            if let mediaURL = student.mediaURL {
+                point.subtitle = "\(mediaURL)"
+            }
             mapView.addAnnotation(point)
-//            mapView.selectAnnotation(point, animated: false)
-            
-            print("\(value.firstName!) \(value.lastName!) (\(value.latitude!),\(value.longitude!))")
+        }
+    }
+}
+
+// MARK: MKMapViewDelegate
+extension MapViewController : MKMapViewDelegate {
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        if annotation is MKUserLocation {
+            return nil
+        }
+        
+        let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
+        annotationView.canShowCallout = true
+        annotationView.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)
+        
+        return annotationView;
+    }
+    
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        let point = view.annotation
+        let urlString = point!.subtitle!
+        
+        if let url = NSURL(string: urlString!) {
+            UIApplication.sharedApplication().openURL(url)
+        } else {
+            JJJUtil.alertWithTitle("Error", andMessage:"Invalid URL: \(urlString)")
         }
     }
 }
