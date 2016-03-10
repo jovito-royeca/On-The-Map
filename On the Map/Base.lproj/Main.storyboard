@@ -50,7 +50,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AJC-KN-VON">
                                 <rect key="frame" x="-25" y="-30" width="97" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TAl-HK-b7D">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
@@ -374,7 +374,7 @@
             </objects>
             <point key="canvasLocation" x="1002" y="548"/>
         </scene>
-        <!--Location Finder View Controller-->
+        <!--Update Location and Link-->
         <scene sceneID="onc-7O-0fM">
             <objects>
                 <viewController storyboardIdentifier="LocationFinderViewController" hidesBottomBarWhenPushed="YES" id="xsV-85-DRj" customClass="LocationFinderViewController" customModule="On_the_Map" customModuleProvider="target" sceneMemberID="viewController">
@@ -451,7 +451,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="ihM-qf-90G">
+                    <navigationItem key="navigationItem" title="Update Location and Link" id="ihM-qf-90G">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="2XZ-Rr-DVj">
                             <connections>
                                 <action selector="cancelAction:" destination="xsV-85-DRj" id="72h-EB-SQ2"/>
@@ -464,6 +464,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="cancelButton" destination="2XZ-Rr-DVj" id="gpZ-3T-gVH"/>
                         <outlet property="linkTextField" destination="EMj-NE-fYT" id="wv6-df-SnO"/>
                         <outlet property="mapView" destination="mWc-St-zkr" id="QNJ-mH-fFX"/>
                         <outlet property="searchBar" destination="jql-VS-UF9" id="oVE-1p-83Y"/>

@@ -13,6 +13,8 @@ import MapKit
 class LocationFinderViewController: UIViewController {
 
     // MARK: Properties
+    
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var submitButton: UIBarButtonItem!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var mapView: MKMapView!
@@ -132,8 +134,11 @@ class LocationFinderViewController: UIViewController {
             for placemark in searchResults {
                 let title = "\(placemark.location!.coordinate.latitude), \(placemark.location!.coordinate.longitude)"
                 var subtitle:String?
+                
                 if let locality = placemark.locality, let country = placemark.country {
                     subtitle = "\(locality), \(country)"
+                } else {
+                    subtitle = placemark.country
                 }
                 let action = UIAlertAction(title: subtitle, style: .Default) { (action) in
                     self.addPinToMap(placemark.location!.coordinate, title: title, subtitle: subtitle)
@@ -141,6 +146,7 @@ class LocationFinderViewController: UIViewController {
                 }
                 alertController.addAction(action)
             }
+            alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
             self.presentViewController(alertController, animated: true, completion: nil)
             
         } else {
@@ -154,21 +160,33 @@ class LocationFinderViewController: UIViewController {
     func reverseGeocodeLocation() {
         let location = CLLocation(latitude: currentLocation!.latitude, longitude: currentLocation!.longitude)
         
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        setUIEnabled(false)
+        
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
             let title = "\(location.coordinate.latitude), \(location.coordinate.longitude)"
             var subtitle:String?
             
-            if error != nil {
-                JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
-            }
-            else if placemarks?.count > 0 {
-                let pm = placemarks![0]
-                if let locality = pm.locality, let country = pm.country {
-                    subtitle = "\(locality), \(country)"
+            performUIUpdatesOnMain {
+                self.setUIEnabled(true)
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                
+                if let error = error {
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error)")
+                } else {
+                    if let placemarks = placemarks {
+                        if let pm = placemarks.first {
+                            if let locality = pm.locality, let country = pm.country {
+                                subtitle = "\(locality), \(country)"
+                            } else {
+                                subtitle = pm.country
+                            }
+                        }
+                    }
+                    
+                    self.addPinToMap(self.currentLocation!, title: title, subtitle: subtitle)
                 }
             }
-            
-            self.addPinToMap(self.currentLocation!, title: title, subtitle: subtitle)
         })
     }
     
@@ -200,6 +218,22 @@ class LocationFinderViewController: UIViewController {
     }
 }
 
+// MARK: UI Updates
+extension LocationFinderViewController {
+    private func setUIEnabled(enabled: Bool) {
+        let alpha:CGFloat = enabled ? 1.0 : 0.5
+        
+        cancelButton.enabled = enabled
+        searchBar.userInteractionEnabled = enabled
+        mapView.userInteractionEnabled = enabled
+        linkTextField.enabled = enabled
+        
+        searchBar.alpha     = alpha
+        mapView.alpha       = alpha
+        linkTextField.alpha = alpha
+    }
+}
+
 // MARK: UISearchBarDelegate
 extension LocationFinderViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
@@ -210,28 +244,40 @@ extension LocationFinderViewController : UISearchBarDelegate {
             
             searchBar.resignFirstResponder()
             MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            setUIEnabled(false)
             
             CLGeocoder().geocodeAddressString(address, completionHandler: { (placemarks, error) in
                 
                 performUIUpdatesOnMain {
+                    self.setUIEnabled(true)
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     
-                    if error != nil {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
-                    } else {
-                        self.searchResults = placemarks
+                    if let error = error {
+                        JJJUtil.alertWithTitle("Error", andMessage:"\(error)")
                         
-                        if placemarks?.count == 1 {
-                            let pm = placemarks?.first
-                            let title = "\(pm!.location!.coordinate.latitude), \(pm!.location!.coordinate.longitude)"
-                            var subtitle:String?
-                            if let locality = pm!.locality, let country = pm!.country {
-                                subtitle = "\(locality), \(country)"
+                    } else {
+                        if let placemarks = placemarks {
+                            self.searchResults = placemarks
+                            
+                            if placemarks.count == 1 {
+                                if let pm = placemarks.first {
+                                    let title = "\(pm.location!.coordinate.latitude), \(pm.location!.coordinate.longitude)"
+                                    var subtitle:String?
+                                    
+                                    if let locality = pm.locality, let country = pm.country {
+                                        subtitle = "\(locality), \(country)"
+                                    } else {
+                                        subtitle = pm.country
+                                    }
+                                    self.addPinToMap(pm.location!.coordinate, title: title, subtitle: subtitle)
+                                }
+                                
+                            } else {
+                                self.showSearchResults()
                             }
-                            self.addPinToMap(pm!.location!.coordinate, title: title, subtitle: subtitle)
                             
                         } else {
-                            self.showSearchResults()
+                            JJJUtil.alertWithTitle("Message", andMessage:"No results found.")
                         }
                     }
                 }
