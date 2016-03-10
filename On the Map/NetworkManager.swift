@@ -118,8 +118,8 @@ class NetworkManager: NSObject {
             Constants.Parse.FieldAppKey: Constants.Parse.FieldAppKeyValue,
             Constants.Http.FieldContentType: Constants.Http.FieldContentTypeValue]
         
-        let body = "{\"\(Constants.ParseJSONKeys.UniqueKey)\": \"\(self.currentStudent!.uniqueKey!)\", \"\(Constants.ParseJSONKeys.FirstName)\": \"\(self.currentStudent!.firstName!)\", \"\(Constants.ParseJSONKeys.LastName)\": \"\(self.currentStudent!.lastName!)\", \"\(Constants.ParseJSONKeys.MapString)\": \"\(mapString)\", \"\(Constants.ParseJSONKeys.MediaURL)\": \"\(mediaURL)\", \"\(Constants.ParseJSONKeys.Latitude)\": \(location.latitude), \"\(Constants.ParseJSONKeys.Longitude)\": \(location.longitude)}"
-
+        let body = "{\"\(Constants.ParseJSONKeys.MapString)\": \"\(mapString)\", \"\(Constants.ParseJSONKeys.MediaURL)\": \"\(mediaURL)\", \"\(Constants.ParseJSONKeys.Latitude)\": \(location.latitude), \"\(Constants.ParseJSONKeys.Longitude)\": \(location.longitude)}"
+        
         let preSuccess = { (results: AnyObject!) in
             if let _ = self.currentStudent {
                 // update the currentStudent information
@@ -139,8 +139,9 @@ class NetworkManager: NSObject {
                     index++
                 }
                 if found {
-                    self.students[index] = self.currentStudent!
+                    self.students.removeAtIndex(index)
                 }
+                self.students.insert(self.currentStudent!, atIndex: 0)
             }
             success(results: results)
         }

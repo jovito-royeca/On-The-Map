@@ -91,19 +91,25 @@ extension ListViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
         let student = students![indexPath.row]
-        
-        /* Get cell type */
-        let cellReuseIdentifier = "ListTableViewCell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellReuseIdentifier) as UITableViewCell!
-        
-        /* Set cell defaults */
-        cell.textLabel!.text = "\(student.firstName!) \(student.lastName!)"
+
+        let cell = tableView.dequeueReusableCellWithIdentifier("listTableViewCell", forIndexPath: indexPath) as! ListTableViewCell
+        cell.nameLabel.text = "\(student.firstName!) \(student.lastName!)"
+        cell.locationLabel.text = student.mapString!
         if let mediaURL = student.mediaURL {
-            cell.detailTextLabel!.text = mediaURL.absoluteString
+            cell.urlLabel.text = mediaURL.absoluteString
+            cell.urlLabel.textColor = UIColor.blackColor()
+            
+            if let _ = NSURL(string: mediaURL.absoluteString) {
+                if let _ = mediaURL.absoluteString.rangeOfString(".") {
+                    cell.urlLabel.textColor = UIColor.blueColor()
+                }
+            }
+            
         } else {
-            cell.detailTextLabel!.text = nil
+            cell.urlLabel.text = "[No URL]"
+            cell.urlLabel.textColor = UIColor.blackColor()
         }
-        
+
         return cell
     }
     
@@ -115,13 +121,30 @@ extension ListViewController: UITableViewDataSource {
 extension ListViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let student = students![indexPath.row]
+        var validLink = false
         
-        if let url = student.mediaURL {
-            if let newUrl = NSURL(string: url.absoluteString) {
-                UIApplication.sharedApplication().openURL(newUrl)
-            } else {
-                JJJUtil.alertWithTitle("Error", andMessage:"Invalid URL: \(url.absoluteString)")
+        if let mediaURL = student.mediaURL {
+            let urlString = mediaURL.absoluteString
+            
+            if let newURL = NSURL(string: urlString) {
+                if let _ = urlString.rangeOfString(".") {
+                    validLink = true
+                    
+                    if newURL.scheme.isEmpty {
+                        UIApplication.sharedApplication().openURL(NSURL(string: "http://\(urlString)")!)
+                        
+                    } else {
+                        UIApplication.sharedApplication().openURL(newURL)
+                    }
+                }
             }
+        } else {
+            // to supress error message below, but we will not open the link because there is none
+            validLink = true
+        }
+        
+        if !validLink {
+            JJJUtil.alertWithTitle("Error", andMessage:"Invalid link.")
         }
     }
 }

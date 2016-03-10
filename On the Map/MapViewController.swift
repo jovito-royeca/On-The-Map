@@ -125,12 +125,25 @@ extension MapViewController : MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         let point = view.annotation
-        let urlString = point!.subtitle!
+        var validLink = false
         
-        if let url = NSURL(string: urlString!) {
-            UIApplication.sharedApplication().openURL(url)
-        } else {
-            JJJUtil.alertWithTitle("Error", andMessage:"Invalid URL: \(urlString)")
+        if let urlString = point!.subtitle {
+            if let newURL = NSURL(string: urlString!) {
+                if let _ = urlString!.rangeOfString(".") {
+                    validLink = true
+                    
+                    if newURL.scheme.isEmpty {
+                        UIApplication.sharedApplication().openURL(NSURL(string: "http://\(urlString)")!)
+                        
+                    } else {
+                        UIApplication.sharedApplication().openURL(newURL)
+                    }
+                }
+            }
+        }
+        
+        if !validLink {
+            JJJUtil.alertWithTitle("Error", andMessage:"Invalid link.")
         }
     }
 }
