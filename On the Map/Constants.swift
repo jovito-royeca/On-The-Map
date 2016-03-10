@@ -15,6 +15,7 @@ struct Constants {
         static let ActionGet               = "GET"
         static let ActionPost              = "POST"
         static let ActionDelete            = "DELETE"
+        static let ActionPut               = "PUT"
         static let FieldAccept             = "Accept"
         static let FieldAcceptValue        = "application/json"
         static let FieldContentType        = "Content-Type"

@@ -18,6 +18,7 @@ class LocationFinderViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var linkTextField: UITextField!
     var currentLocation:CLLocationCoordinate2D?
+    var currentMapString:String?
     var searchResults:[CLPlacemark]?
     
     // MARK: Actions
@@ -26,7 +27,12 @@ class LocationFinderViewController: UIViewController {
     }
     
     @IBAction func submitAction(sender: UIBarButtonItem) {
-        let message = "Submit the Location: (\(currentLocation!.latitude), \(currentLocation!.longitude)) and the Link: \(self.linkTextField.text!)?"
+        guard let link = NSURL(string: linkTextField.text!) else {
+            JJJUtil.alertWithTitle("Error", andMessage:"Invalid link.")
+            return
+        }
+        
+        let message = "Submit the Location: (\(currentLocation!.latitude), \(currentLocation!.longitude)) and the Link: \(link.absoluteString)?"
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil);
@@ -35,7 +41,7 @@ class LocationFinderViewController: UIViewController {
         let submitAction = UIAlertAction(title: "Submit", style: .Destructive) { (action) in
             MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             
-            NetworkManager.sharedInstance().parseUpdateStudentLocation(self.currentLocation!, mediaURL: self.linkTextField.text!, success: { (results) in
+            NetworkManager.sharedInstance().parseUpdateStudentLocation(self.currentLocation!, mapString: self.currentMapString!, mediaURL: link.absoluteString, success: { (results) in
                 performUIUpdatesOnMain {
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     self.navigationController!.popToRootViewControllerAnimated(true)
@@ -57,6 +63,7 @@ class LocationFinderViewController: UIViewController {
         searchBar.delegate = self
         mapView.delegate = self
         linkTextField.delegate = self
+        linkTextField.addTarget(self, action: "checkLinkTextField", forControlEvents: .EditingChanged)
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -66,12 +73,11 @@ class LocationFinderViewController: UIViewController {
             if let latitude = currentStudent.latitude, let longitude = currentStudent.longitude {
                 currentLocation = CLLocationCoordinate2DMake(latitude, longitude)
                 
-                var subtitle:String?
-                if let mediaURL = currentStudent.mediaURL {
-                    subtitle = mediaURL.absoluteString
-                }
+                addPinToMap(currentLocation!, title: "(\(latitude), \(longitude))", subtitle: currentStudent.mapString)
                 
-                addPinToMap(currentLocation!, title: "\(currentStudent.firstName!) \(currentStudent.lastName!)", subtitle:subtitle)
+                if let mediaURL = currentStudent.mediaURL {
+                    linkTextField.text = mediaURL.absoluteString
+                }
             }
         }
         
@@ -96,15 +102,27 @@ class LocationFinderViewController: UIViewController {
     
     // MARK: Custom methods
     func addPinToMap(location: CLLocationCoordinate2D, title: String, subtitle: String?) {
+        // remove previous pins
+        for ann in self.mapView.annotations {
+            self.mapView.removeAnnotation(ann)
+        }
+        
+        // make a pin
         let point = MKPointAnnotation()
         point.coordinate = location
         point.title = title
         point.subtitle = subtitle
         mapView.addAnnotation(point)
         mapView.selectAnnotation(point, animated: false)
-        
         mapView.centerCoordinate = location
+        
+        // zoom the map
+        let span = MKCoordinateSpanMake(0.5, 0.5)
+        let region = MKCoordinateRegionMake(location, span)
+        mapView.region = region
+        
         currentLocation = location
+        currentMapString = subtitle == nil ? "" : subtitle
     }
     
     func showSearchResults() {
@@ -112,16 +130,53 @@ class LocationFinderViewController: UIViewController {
             let alertController = UIAlertController(title: nil, message: "Select", preferredStyle: .Alert)
             
             for placemark in searchResults {
-                let title = "\(placemark.name!), \(placemark.country!)"
-                let action = UIAlertAction(title: title, style: .Default) { (action) in
-                    self.addPinToMap(placemark.location!.coordinate, title: title, subtitle: nil)
+                let title = "\(placemark.location!.coordinate.latitude), \(placemark.location!.coordinate.longitude)"
+                var subtitle:String?
+                if let locality = placemark.locality, let country = placemark.country {
+                    subtitle = "\(locality), \(country)"
+                }
+                let action = UIAlertAction(title: subtitle, style: .Default) { (action) in
+                    self.addPinToMap(placemark.location!.coordinate, title: title, subtitle: subtitle)
+                    self.checkLinkTextField()
                 }
                 alertController.addAction(action)
             }
-            
             self.presentViewController(alertController, animated: true, completion: nil)
+            
         } else {
             JJJUtil.alertWithTitle("Message", andMessage:"No results found.")
+        }
+    }
+    
+    /**
+        Reverse geocode the location using Apple Maps
+     */
+    func reverseGeocodeLocation() {
+        let location = CLLocation(latitude: currentLocation!.latitude, longitude: currentLocation!.longitude)
+        
+        CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+            let title = "\(location.coordinate.latitude), \(location.coordinate.longitude)"
+            var subtitle:String?
+            
+            if error != nil {
+                JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
+            }
+            else if placemarks?.count > 0 {
+                let pm = placemarks![0]
+                if let locality = pm.locality, let country = pm.country {
+                    subtitle = "\(locality), \(country)"
+                }
+            }
+            
+            self.addPinToMap(self.currentLocation!, title: title, subtitle: subtitle)
+        })
+    }
+    
+    func checkLinkTextField() {
+        if let text = linkTextField.text {
+            submitButton.enabled = !text.isEmpty
+        } else {
+            submitButton.enabled = false
         }
     }
     
@@ -159,11 +214,6 @@ extension LocationFinderViewController : UISearchBarDelegate {
             CLGeocoder().geocodeAddressString(address, completionHandler: { (placemarks, error) in
                 
                 performUIUpdatesOnMain {
-                    // remove previous pins
-                    for ann in self.mapView.annotations {
-                        self.mapView.removeAnnotation(ann)
-                    }
-                    
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     
                     if error != nil {
@@ -172,9 +222,13 @@ extension LocationFinderViewController : UISearchBarDelegate {
                         self.searchResults = placemarks
                         
                         if placemarks?.count == 1 {
-                            let placemark = placemarks?.first
-                            let title = "\(placemark!.name!), \(placemark!.country!)"
-                            self.addPinToMap(placemark!.location!.coordinate, title: title, subtitle: nil)
+                            let pm = placemarks?.first
+                            let title = "\(pm!.location!.coordinate.latitude), \(pm!.location!.coordinate.longitude)"
+                            var subtitle:String?
+                            if let locality = pm!.locality, let country = pm!.country {
+                                subtitle = "\(locality), \(country)"
+                            }
+                            self.addPinToMap(pm!.location!.coordinate, title: title, subtitle: subtitle)
                             
                         } else {
                             self.showSearchResults()
@@ -207,15 +261,9 @@ extension LocationFinderViewController : MKMapViewDelegate {
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, didChangeDragState newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
         
         if newState == .Ending {
-            let location = view.annotation!.coordinate
-
-            // remove previous pins
-            for ann in self.mapView.annotations {
-                self.mapView.removeAnnotation(ann)
-            }
-            
-            addPinToMap(location, title: "(\(location.latitude), \(location.longitude))", subtitle: nil)
-            currentLocation = location
+            currentLocation = view.annotation!.coordinate
+            checkLinkTextField()
+            reverseGeocodeLocation()
         }
     }
 }
@@ -223,24 +271,7 @@ extension LocationFinderViewController : MKMapViewDelegate {
 // MARK: UITextFieldDelegate
 extension LocationFinderViewController : UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if let link = textField.text {
-            if link.isEmpty {
-                submitButton.enabled = false
-                return false
-            }
-            
-            textField.resignFirstResponder()
-            
-            if let _ = NSURL(string: link) {
-                submitButton.enabled = true
-            } else {
-                submitButton.enabled = false
-                JJJUtil.alertWithTitle("Error", andMessage:"Invalid link.")
-            }
-            
-            return true
-        }
-        
-        return false
+        textField.resignFirstResponder()
+        return true
     }
 }

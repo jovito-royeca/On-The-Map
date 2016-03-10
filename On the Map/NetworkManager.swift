@@ -23,7 +23,7 @@ class NetworkManager: NSObject {
                        Constants.Http.FieldContentType: Constants.Http.FieldContentTypeValue]
         let body = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}"
         
-        let parser = { (results: AnyObject!) in
+        let preSuccess = { (results: AnyObject!) in
             // weird Xcode Swift warning
             // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
             if let account = results["account"] as? [String: AnyObject] {
@@ -41,11 +41,9 @@ class NetworkManager: NSObject {
             }
             
             self.parseGetStudentLocations(success, failure: failure)
-            
-//            success(results: results)
         }
         
-        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: body, dataOffset: Constants.Udacity.DataOffset, isJSON: true, success: parser, failure: failure)
+        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: body, dataOffset: Constants.Udacity.DataOffset, isJSON: true, success: preSuccess, failure: failure)
     }
     
     func udacityLogout(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
@@ -66,7 +64,7 @@ class NetworkManager: NSObject {
         }
         
         
-        let parser = { (results: AnyObject!) in
+        let preSuccess = { (results: AnyObject!) in
             self.students = [StudentInformation]()
             self.userID = nil
             self.sessionID = nil
@@ -74,7 +72,7 @@ class NetworkManager: NSObject {
             success(results: results)
         }
         
-        self .exec(httpMethod, urlString: urlString, headers: nil, parameters: nil, values: values, body: nil, dataOffset: Constants.Udacity.DataOffset, isJSON: true, success: parser, failure: failure)
+        self .exec(httpMethod, urlString: urlString, headers: nil, parameters: nil, values: values, body: nil, dataOffset: Constants.Udacity.DataOffset, isJSON: true, success: preSuccess, failure: failure)
     }
     
     func parseGetStudentLocations(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
@@ -84,7 +82,7 @@ class NetworkManager: NSObject {
             Constants.Parse.FieldAppKey: Constants.Parse.FieldAppKeyValue]
         let parameters = [Constants.Parse.SortKey: Constants.Parse.SortValue]
         
-        let parser = { (results: AnyObject!) in
+        let preSuccess = { (results: AnyObject!) in
             self.students.removeAll()
             
             // weird Xcode Swift warning
@@ -105,7 +103,7 @@ class NetworkManager: NSObject {
             }
         }
         
-        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: parser, failure: failure)
+        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: preSuccess, failure: failure)
         
     }
     
@@ -113,17 +111,41 @@ class NetworkManager: NSObject {
         
     }
     
-    func parseUpdateStudentLocation(location: CLLocationCoordinate2D, mediaURL: String, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
-        let httpMethod = Constants.Http.ActionPost
+    func parseUpdateStudentLocation(location: CLLocationCoordinate2D, mapString: String, mediaURL: String, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        let httpMethod = Constants.Http.ActionPut
         let urlString = "\(Constants.Parse.ApiScheme)://\(Constants.Parse.ApiHost)/\(Constants.Parse.ApiPath)/\(Constants.ParseMethods.StudentLocation)/\(self.currentStudent!.objectId!)"
         let headers = [Constants.Parse.FieldAppID: Constants.Parse.FieldAppIDValue,
             Constants.Parse.FieldAppKey: Constants.Parse.FieldAppKeyValue,
             Constants.Http.FieldContentType: Constants.Http.FieldContentTypeValue]
-        let mapString = self.currentStudent!.mapString != nil ? self.currentStudent!.mapString! : ""
         
-        let body = "{\"uniqueKey\": \"\(self.currentStudent!.uniqueKey!)\", \"firstName\": \"\(self.currentStudent!.firstName!)\", \"lastName\": \"\(self.currentStudent!.lastName!)\", \"mapString\": \"\(mapString)\", \"mediaURL\": \"\(mediaURL)\", \"latitude\": \(location.latitude), \"longitude\": \(location.longitude)}"
+        let body = "{\"\(Constants.ParseJSONKeys.UniqueKey)\": \"\(self.currentStudent!.uniqueKey!)\", \"\(Constants.ParseJSONKeys.FirstName)\": \"\(self.currentStudent!.firstName!)\", \"\(Constants.ParseJSONKeys.LastName)\": \"\(self.currentStudent!.lastName!)\", \"\(Constants.ParseJSONKeys.MapString)\": \"\(mapString)\", \"\(Constants.ParseJSONKeys.MediaURL)\": \"\(mediaURL)\", \"\(Constants.ParseJSONKeys.Latitude)\": \(location.latitude), \"\(Constants.ParseJSONKeys.Longitude)\": \(location.longitude)}"
 
-        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: body, dataOffset: 0, isJSON: true, success: success, failure: failure)
+        let preSuccess = { (results: AnyObject!) in
+            if let _ = self.currentStudent {
+                // update the currentStudent information
+                self.currentStudent?.latitude = location.latitude
+                self.currentStudent?.longitude = location.longitude
+                self.currentStudent?.mapString = mapString
+                self.currentStudent?.mediaURL = NSURL(string: mediaURL)
+                var index = 0
+                var found = false
+                
+                // update the student information in students
+                for student in self.students {
+                    if student.uniqueKey == self.currentStudent?.uniqueKey {
+                        found = true
+                        break
+                    }
+                    index++
+                }
+                if found {
+                    self.students[index] = self.currentStudent!
+                }
+            }
+            success(results: results)
+        }
+        
+        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: body, dataOffset: 0, isJSON: true, success: preSuccess, failure: failure)
     }
     
     func exec(httpMethod: String!,

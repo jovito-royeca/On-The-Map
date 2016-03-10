@@ -33,7 +33,22 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func pinAction(sender: UIBarButtonItem) {
-        
+        if let currentStudent = NetworkManager.sharedInstance().currentStudent {
+            let message = "User \"\(currentStudent.firstName!) \(currentStudent.lastName!)\" Has Already Posted a Student Location. Would You Like to Overwrite Their Location?"
+            
+            let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil);
+            alertController.addAction(cancelAction)
+            
+            let overwriteAction = UIAlertAction(title: "Overwrite", style: .Destructive) { (action) in
+                let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LocationFinderViewController") as! LocationFinderViewController
+                self.navigationController!.pushViewController(controller, animated: true)
+            }
+            alertController.addAction(overwriteAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
     }
     
     @IBAction func refreshAction(sender: UIBarButtonItem) {

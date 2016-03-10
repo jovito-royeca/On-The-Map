@@ -419,6 +419,8 @@
                                 <exclude reference="EMj-NE-fYT"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="DNX-eU-dM1"/>
+                                <exclude reference="tvI-Yc-L3j"/>
                                 <exclude reference="5qv-Jk-a6U"/>
                                 <exclude reference="TYm-6Q-zox"/>
                                 <exclude reference="Va6-RF-ZKq"/>
@@ -427,8 +429,6 @@
                                 <exclude reference="lJP-Eb-gek"/>
                                 <exclude reference="yFh-9Y-bE5"/>
                                 <exclude reference="EGQ-ii-g6U"/>
-                                <exclude reference="DNX-eU-dM1"/>
-                                <exclude reference="tvI-Yc-L3j"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -438,6 +438,8 @@
                                 <include reference="EMj-NE-fYT"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="DNX-eU-dM1"/>
+                                <include reference="tvI-Yc-L3j"/>
                                 <include reference="5qv-Jk-a6U"/>
                                 <include reference="TYm-6Q-zox"/>
                                 <include reference="Va6-RF-ZKq"/>
@@ -446,8 +448,6 @@
                                 <include reference="lJP-Eb-gek"/>
                                 <include reference="yFh-9Y-bE5"/>
                                 <include reference="EGQ-ii-g6U"/>
-                                <include reference="DNX-eU-dM1"/>
-                                <include reference="tvI-Yc-L3j"/>
                             </mask>
                         </variation>
                     </view>
