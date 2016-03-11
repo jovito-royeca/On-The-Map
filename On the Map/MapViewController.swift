@@ -48,32 +48,25 @@ class MapViewController: UIViewController {
             alertController.addAction(overwriteAction)
             
             self.presentViewController(alertController, animated: true, completion: nil)
+        
+        } else {
+            let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LocationFinderViewController") as! LocationFinderViewController
+            self.navigationController!.pushViewController(controller, animated: true)
         }
     }
     
     @IBAction func refreshAction(sender: UIBarButtonItem) {
-        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
-        NetworkManager.sharedInstance().parseGetStudentLocations({ (results) in
-            performUIUpdatesOnMain {
-                self.students = NetworkManager.sharedInstance().students
-                self.addPinsToMap()
-                MBProgressHUD.hideHUDForView(self.view, animated: true)
-                
-            }}, failure: { (error) in
-                performUIUpdatesOnMain {
-                    self.students = NetworkManager.sharedInstance().students
-                    self.addPinsToMap()
-                    MBProgressHUD.hideHUDForView(self.view, animated: true)
-                    JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
-                }
-        })
     }
     
     
     // MARK: Overrides
     override func viewDidLoad() {
         mapView.delegate = self
+        
+        if NetworkManager.sharedInstance().students.isEmpty {
+            getStudentLocations()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -106,6 +99,25 @@ class MapViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func getStudentLocations() {
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
+        NetworkManager.sharedInstance().parseGetStudentLocations({ (results) in
+            performUIUpdatesOnMain {
+                self.students = NetworkManager.sharedInstance().students
+                self.addPinsToMap()
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                
+            }}, failure: { (error) in
+                performUIUpdatesOnMain {
+                    self.students = NetworkManager.sharedInstance().students
+                    self.addPinsToMap()
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
+                }
+        })
     }
 }
 
@@ -140,6 +152,9 @@ extension MapViewController : MKMapViewDelegate {
                     }
                 }
             }
+        } else {
+            // to supress error message below, but we will not open the link because there is none
+            validLink = true
         }
         
         if !validLink {

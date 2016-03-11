@@ -47,6 +47,10 @@ class ListViewController: UIViewController {
             alertController.addAction(overwriteAction)
             
             self.presentViewController(alertController, animated: true, completion: nil)
+        
+        } else {
+            let controller = self.storyboard!.instantiateViewControllerWithIdentifier("LocationFinderViewController") as! LocationFinderViewController
+            self.navigationController!.pushViewController(controller, animated: true)
         }
     }
     
@@ -84,6 +88,26 @@ class ListViewController: UIViewController {
         students = NetworkManager.sharedInstance().students
         tabeView.reloadData()
     }
+    
+    // MARK: Custom methods
+    func deleteLocation() {
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
+        NetworkManager.sharedInstance().parseDeleteStudentLocation({ (results) in
+            performUIUpdatesOnMain {
+                self.students = NetworkManager.sharedInstance().students
+                self.tabeView.reloadData()
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                
+            }}, failure: { (error) in
+                performUIUpdatesOnMain {
+                    self.students = NetworkManager.sharedInstance().students
+                    self.tabeView.reloadData()
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
+                }
+        })
+    }
 }
 
 // MARK: UITableViewDataSource
@@ -115,6 +139,32 @@ extension ListViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return students!.count
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        let student = students![indexPath.row]
+        
+        if student.uniqueKey! == NetworkManager.sharedInstance().currentStudent?.uniqueKey {
+            return true
+        }
+        
+        return false
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        let message = "Delete your Location and Link?"
+        
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil);
+        alertController.addAction(cancelAction)
+        
+        let overwriteAction = UIAlertAction(title: "Delete", style: .Destructive) { (action) in
+            self.deleteLocation()
+        }
+        alertController.addAction(overwriteAction)
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 }
 

@@ -41,18 +41,25 @@ class LocationFinderViewController: UIViewController {
         alertController.addAction(cancelAction)
         
         let submitAction = UIAlertAction(title: "Submit", style: .Destructive) { (action) in
-            MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            
-            NetworkManager.sharedInstance().parseUpdateStudentLocation(self.currentLocation!, mapString: self.currentMapString!, mediaURL: link.absoluteString, success: { (results) in
+            let success = { (results: AnyObject!) in
                 performUIUpdatesOnMain {
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     self.navigationController!.popToRootViewControllerAnimated(true)
-                }}, failure:  { (error) in
-                    performUIUpdatesOnMain {
-                        MBProgressHUD.hideHUDForView(self.view, animated: true)
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
-                    }
-            })
+                }
+            }
+            let failure = { (error: NSError?) in
+                performUIUpdatesOnMain {
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
+                }
+            }
+            
+            MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            if let _ = NetworkManager.sharedInstance().currentStudent {
+                NetworkManager.sharedInstance().parseUpdateStudentLocation(self.currentLocation!, mapString: self.currentMapString!, mediaURL: link.absoluteString, success: success, failure: failure)
+            } else {
+                NetworkManager.sharedInstance().parseCreateStudentLocation(self.currentLocation!, mapString: self.currentMapString!, mediaURL: link.absoluteString, success: success, failure: failure)
+            }
         }
         alertController.addAction(submitAction)
         
@@ -81,6 +88,8 @@ class LocationFinderViewController: UIViewController {
                     linkTextField.text = mediaURL.absoluteString
                 }
             }
+        } else {
+            title = "Add Location and Link"
         }
         
         subscribeToKeyboardNotifications()

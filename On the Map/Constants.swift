@@ -37,10 +37,18 @@ struct Constants {
         static let UserData = "users/{userId}"
     }
     
+    // MARK: Udacity JSON Keys
+    struct UdacityJSONKeys {
+        static let FirstName = "first_name"
+        static let LastName  = "last_name"
+        static let Key = "key"
+    }
+    
     // MARK: Facebook
     struct Facebook {
         static let AppID        = "365362206864879"
         static let SchemeSuffix = "onthemap"
+        static let DataOffset   = 0
     }
     
     // MARK: Parse
@@ -55,6 +63,7 @@ struct Constants {
         static let InitialLimit      = 100
         static let SortKey           = "order"
         static let SortValue         = "-updatedAt"
+        static let DataOffset        = 0
     }
     
     // MARK: Parse Methods

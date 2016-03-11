@@ -13,7 +13,7 @@ class NetworkManager: NSObject {
     
     var students = [StudentInformation]()
     var currentStudent:StudentInformation?
-    var userID:String?
+    var userData:UserData?
     var sessionID:String?
     
     func udacityLogin(username: String, password: String, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
@@ -26,24 +26,25 @@ class NetworkManager: NSObject {
         let preSuccess = { (results: AnyObject!) in
             // weird Xcode Swift warning
             // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
-            if let account = results["account"] as? [String: AnyObject] {
-                self.userID = account["key"] as? String
-            } else {
-                self.fail("account key not found", failure: failure)
-            }
-            
-            // weird Xcode Swift warning
-            // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
             if let session = results["session"] as? [String: AnyObject] {
                 self.sessionID = session["id"] as? String
             } else {
                 self.fail("session key not found", failure: failure)
             }
             
-            self.parseGetStudentLocations(success, failure: failure)
+            // weird Xcode Swift warning
+            // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
+            if let account = results["account"] as? [String: AnyObject] {
+                let key = account["key"] as? String
+                
+                self.udacityGetUserData(key!, success: success, failure: failure);
+                
+            } else {
+                self.fail("account key not found", failure: failure)
+            }
         }
         
-        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: body, dataOffset: Constants.Udacity.DataOffset, isJSON: true, success: preSuccess, failure: failure)
+        self.exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: body, dataOffset: Constants.Udacity.DataOffset, isJSON: true, success: preSuccess, failure: failure)
     }
     
     func udacityLogout(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
@@ -66,13 +67,33 @@ class NetworkManager: NSObject {
         
         let preSuccess = { (results: AnyObject!) in
             self.students = [StudentInformation]()
-            self.userID = nil
+            self.userData = nil
             self.sessionID = nil
             
             success(results: results)
         }
         
-        self .exec(httpMethod, urlString: urlString, headers: nil, parameters: nil, values: values, body: nil, dataOffset: Constants.Udacity.DataOffset, isJSON: true, success: preSuccess, failure: failure)
+        self.exec(httpMethod, urlString: urlString, headers: nil, parameters: nil, values: values, body: nil, dataOffset: Constants.Udacity.DataOffset, isJSON: true, success: preSuccess, failure: failure)
+    }
+    
+    func udacityGetUserData(key: String, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        let httpMethod = Constants.Http.ActionGet
+        let userId = Constants.UdacityMethods.UserData.stringByReplacingOccurrencesOfString("{userId}", withString: key)
+        let urlString = "\(Constants.Parse.ApiScheme)://\(Constants.Udacity.ApiHost)/\(Constants.Udacity.ApiPath)/\(userId)"
+        
+        let preSuccess = { (results: AnyObject!) in
+            // weird Xcode Swift warning
+            // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
+            if let user = results["user"] as? [String: AnyObject] {
+                self.userData = UserData(dictionary: user)
+                success(results: results)
+                
+            } else {
+                self.fail("user key not found", failure: failure)
+            }
+        }
+        
+        self.exec(httpMethod, urlString: urlString, headers: nil, parameters: nil, values: nil, body: nil, dataOffset: Constants.Udacity.DataOffset, isJSON: true, success: preSuccess, failure: failure)
     }
     
     func parseGetStudentLocations(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
@@ -92,9 +113,9 @@ class NetworkManager: NSObject {
                     let student = StudentInformation(dictionary: dict)
                     self.students.append(student)
                  
-                    // let's store the currently login user from the results
-                    if let uniqueKey = dict[Constants.ParseJSONKeys.UniqueKey] as? String, userID = self.userID {
-                        if uniqueKey == userID {
+                    // let's store the currently logged-in user from the results
+                    if let uniqueKey = dict[Constants.ParseJSONKeys.UniqueKey] as? String {
+                        if uniqueKey == self.userData?.key {
                             self.currentStudent = student
                         }
                     }
@@ -103,12 +124,23 @@ class NetworkManager: NSObject {
             }
         }
         
-        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: nil, dataOffset: 0, isJSON: true, success: preSuccess, failure: failure)
-        
+        self.exec(httpMethod, urlString: urlString, headers: headers, parameters: parameters, values: nil, body: nil, dataOffset: Constants.Parse.DataOffset, isJSON: true, success: preSuccess, failure: failure)
     }
     
-    func parseCreateStudentLocation(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+    func parseCreateStudentLocation(location: CLLocationCoordinate2D, mapString: String, mediaURL: String, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        let httpMethod = Constants.Http.ActionPost
+        let urlString = "\(Constants.Parse.ApiScheme)://\(Constants.Parse.ApiHost)/\(Constants.Parse.ApiPath)/\(Constants.ParseMethods.StudentLocation)"
+        let headers = [Constants.Parse.FieldAppID: Constants.Parse.FieldAppIDValue,
+            Constants.Parse.FieldAppKey: Constants.Parse.FieldAppKeyValue,
+            Constants.Http.FieldContentType: Constants.Http.FieldContentTypeValue]
         
+        let body = "{\"\(Constants.ParseJSONKeys.UniqueKey)\": \"\(userData!.key!)\", \"\(Constants.ParseJSONKeys.FirstName)\": \"\(userData!.firstName!)\", \"\(Constants.ParseJSONKeys.LastName)\": \"\(userData!.lastName!)\", \"\(Constants.ParseJSONKeys.MapString)\": \"\(mapString)\", \"\(Constants.ParseJSONKeys.MediaURL)\": \"\(mediaURL)\", \"\(Constants.ParseJSONKeys.Latitude)\": \(location.latitude), \"\(Constants.ParseJSONKeys.Longitude)\": \(location.longitude)}"
+        
+        let preSuccess = { (results: AnyObject!) in
+            self.parseGetStudentLocations(success, failure: failure)
+        }
+
+        self.exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: body, dataOffset: Constants.Parse.DataOffset, isJSON: true, success: preSuccess, failure: failure)
     }
     
     func parseUpdateStudentLocation(location: CLLocationCoordinate2D, mapString: String, mediaURL: String, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
@@ -146,7 +178,40 @@ class NetworkManager: NSObject {
             success(results: results)
         }
         
-        self .exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: body, dataOffset: 0, isJSON: true, success: preSuccess, failure: failure)
+        self.exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: body, dataOffset: Constants.Parse.DataOffset, isJSON: true, success: preSuccess, failure: failure)
+    }
+    
+    func parseDeleteStudentLocation(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        let httpMethod = Constants.Http.ActionDelete
+        let urlString = "\(Constants.Parse.ApiScheme)://\(Constants.Parse.ApiHost)/\(Constants.Parse.ApiPath)/\(Constants.ParseMethods.StudentLocation)/\(self.currentStudent!.objectId!)"
+        let headers = [Constants.Parse.FieldAppID: Constants.Parse.FieldAppIDValue,
+            Constants.Parse.FieldAppKey: Constants.Parse.FieldAppKeyValue,
+            Constants.Http.FieldContentType: Constants.Http.FieldContentTypeValue]
+        
+        let preSuccess = { (results: AnyObject!) in
+            if let _ = self.currentStudent {
+                var index = 0
+                var found = false
+                
+                // remove the student information in students
+                for student in self.students {
+                    if student.uniqueKey == self.currentStudent?.uniqueKey {
+                        found = true
+                        break
+                    }
+                    index++
+                }
+                if found {
+                    self.students.removeAtIndex(index)
+                }
+                
+                // remove the current student
+                self.currentStudent = nil
+            }
+            success(results: results)
+        }
+        
+        self.exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: nil, dataOffset: Constants.Parse.DataOffset, isJSON: true, success: preSuccess, failure: failure)
     }
     
     func exec(httpMethod: String!,
