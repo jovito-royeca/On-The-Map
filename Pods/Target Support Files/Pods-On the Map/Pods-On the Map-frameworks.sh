@@ -82,3 +82,18 @@ strip_invalid_archs() {
   fi
 }
 
+
+if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "Pods-On the Map/Bolts.framework"
+  install_framework "Pods-On the Map/FBSDKCoreKit.framework"
+  install_framework "Pods-On the Map/FBSDKLoginKit.framework"
+  install_framework "Pods-On the Map/JJJUtils.framework"
+  install_framework "Pods-On the Map/MBProgressHUD.framework"
+fi
+if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "Pods-On the Map/Bolts.framework"
+  install_framework "Pods-On the Map/FBSDKCoreKit.framework"
+  install_framework "Pods-On the Map/FBSDKLoginKit.framework"
+  install_framework "Pods-On the Map/JJJUtils.framework"
+  install_framework "Pods-On the Map/MBProgressHUD.framework"
+fi

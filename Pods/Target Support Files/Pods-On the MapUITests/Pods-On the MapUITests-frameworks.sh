@@ -82,3 +82,18 @@ strip_invalid_archs() {
   fi
 }
 
+
+if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "Pods-On the MapUITests/Bolts.framework"
+  install_framework "Pods-On the MapUITests/FBSDKCoreKit.framework"
+  install_framework "Pods-On the MapUITests/FBSDKLoginKit.framework"
+  install_framework "Pods-On the MapUITests/JJJUtils.framework"
+  install_framework "Pods-On the MapUITests/MBProgressHUD.framework"
+fi
+if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "Pods-On the MapUITests/Bolts.framework"
+  install_framework "Pods-On the MapUITests/FBSDKCoreKit.framework"
+  install_framework "Pods-On the MapUITests/FBSDKLoginKit.framework"
+  install_framework "Pods-On the MapUITests/JJJUtils.framework"
+  install_framework "Pods-On the MapUITests/MBProgressHUD.framework"
+fi
