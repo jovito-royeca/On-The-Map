@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 import CoreLocation
 
 class NetworkManager: NSObject {
@@ -14,8 +15,9 @@ class NetworkManager: NSObject {
     var students = [StudentInformation]()
     var currentStudent:StudentInformation?
     var userData:UserData?
-    var sessionID:String?
+    var udacitySessionID:String?
     
+    // MARK: Udacity API
     func udacityLogin(username: String, password: String, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let httpMethod = Constants.Http.ActionPost
         let urlString = "\(Constants.Udacity.ApiScheme)://\(Constants.Udacity.ApiHost)/\(Constants.Udacity.ApiPath)/\(Constants.UdacityMethods.Session)"
@@ -27,7 +29,7 @@ class NetworkManager: NSObject {
             // weird Xcode Swift warning
             // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
             if let session = results["session"] as? [String: AnyObject] {
-                self.sessionID = session["id"] as? String
+                self.udacitySessionID = session["id"] as? String
             } else {
                 self.fail("session key not found", failure: failure)
             }
@@ -68,7 +70,10 @@ class NetworkManager: NSObject {
         let preSuccess = { (results: AnyObject!) in
             self.students = [StudentInformation]()
             self.userData = nil
-            self.sessionID = nil
+            self.udacitySessionID = nil
+
+            let loginManager = FBSDKLoginManager()
+            loginManager.logOut()
             
             success(results: results)
         }
@@ -96,6 +101,7 @@ class NetworkManager: NSObject {
         self.exec(httpMethod, urlString: urlString, headers: nil, parameters: nil, values: nil, body: nil, dataOffset: Constants.Udacity.DataOffset, isJSON: true, success: preSuccess, failure: failure)
     }
     
+    // MARK: Parse API
     func parseGetStudentLocations(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let httpMethod = Constants.Http.ActionGet
         let urlString = "\(Constants.Parse.ApiScheme)://\(Constants.Parse.ApiHost)/\(Constants.Parse.ApiPath)/\(Constants.ParseMethods.StudentLocation)"
@@ -214,6 +220,48 @@ class NetworkManager: NSObject {
         self.exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: nil, dataOffset: Constants.Parse.DataOffset, isJSON: true, success: preSuccess, failure: failure)
     }
     
+    // MARK: Facebook
+    func facebookLogin(view: UIViewController, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
+        let loginManager = FBSDKLoginManager()
+        
+        loginManager.logInWithReadPermissions(["public_profile"], fromViewController:view, handler: { (result, error) in
+            if let _ = error {
+                self.fail("Facebook Login Error", failure: failure)
+                
+            } else {
+                let httpMethod = Constants.Http.ActionPost
+                let urlString = "\(Constants.Udacity.ApiScheme)://\(Constants.Udacity.ApiHost)/\(Constants.Udacity.ApiPath)/\(Constants.UdacityMethods.Session)"
+                let headers = [Constants.Http.FieldAccept: Constants.Http.FieldAcceptValue,
+                    Constants.Http.FieldContentType: Constants.Http.FieldContentTypeValue]
+                let body = "{\"\(Constants.FacebookJSONKeys.FacebookMobile)\": {\"\(Constants.FacebookJSONKeys.AccessToken)\": \"\(FBSDKAccessToken.currentAccessToken().tokenString)\"}}"
+                
+                let preSuccess = { (results: AnyObject!) in
+                    // weird Xcode Swift warning
+                    // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
+                    if let session = results["session"] as? [String: AnyObject] {
+                        self.udacitySessionID = session["id"] as? String
+                    } else {
+                        self.fail("session key not found", failure: failure)
+                    }
+                    
+                    // weird Xcode Swift warning
+                    // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
+                    if let account = results["account"] as? [String: AnyObject] {
+                        let key = account["key"] as? String
+                        
+                        self.udacityGetUserData(key!, success: success, failure: failure);
+                        
+                    } else {
+                        self.fail("account key not found", failure: failure)
+                    }
+                }
+                
+                self.exec(httpMethod, urlString: urlString, headers: headers, parameters: nil, values: nil, body: body, dataOffset: Constants.Udacity.DataOffset, isJSON: true, success: preSuccess, failure: failure)
+            }
+        })
+    }
+    
+    // MARK: HTTP Ops
     func exec(httpMethod: String!,
                urlString: String!,
                  headers: [String:AnyObject]?,
@@ -302,6 +350,7 @@ class NetworkManager: NSObject {
         task.resume()
     }
     
+    // MARK: Custom methods
     func fail(error: String, failure: (error: NSError?) -> Void) {
         print(error)
         let userInfo = [NSLocalizedDescriptionKey : error]

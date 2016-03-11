@@ -78,15 +78,19 @@ class MapViewController: UIViewController {
     // MARK: Overrides
     override func viewDidLoad() {
         mapView.delegate = self
+        getStudentLocations()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        if NetworkManager.sharedInstance().students.isEmpty {
-            getStudentLocations()
-        }
-        
+//        if NetworkManager.sharedInstance().students.count == 0 {
+//            getStudentLocations()
+//            
+//        } else {
+//            students = NetworkManager.sharedInstance().students
+//            addPinsToMap()
+//        }
         students = NetworkManager.sharedInstance().students
         addPinsToMap()
     }

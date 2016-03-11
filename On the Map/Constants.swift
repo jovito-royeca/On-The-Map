@@ -47,9 +47,13 @@ struct Constants {
     
     // MARK: Facebook
     struct Facebook {
-        static let AppID        = "365362206864879"
-        static let SchemeSuffix = "onthemap"
         static let DataOffset   = 0
+    }
+    
+    // MARK: Facebook JSON Keys
+    struct FacebookJSONKeys {
+        static let FacebookMobile = "facebook_mobile"
+        static let AccessToken    = "access_token"
     }
     
     // MARK: Parse

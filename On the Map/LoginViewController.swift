@@ -34,7 +34,19 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func facebookButtonAction(sender: UIButton) {
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
+        NetworkManager.sharedInstance().facebookLogin(self, success: { (results) in
+            performUIUpdatesOnMain {
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MainTabBarController") as! UITabBarController
+                self.presentViewController(controller, animated: true, completion: nil)
+            }}, failure:  { (error) in
+                performUIUpdatesOnMain {
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
+                }
+        })
     }
     
     

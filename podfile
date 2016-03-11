@@ -5,16 +5,25 @@ platform :ios, "8.0"
 #use_frameworks!
 
 target "On the Map" do
+pod 'FBSDKCoreKit'
+pod 'FBSDKLoginKit'
+#pod 'FBSDKShareKit'
 pod 'JJJUtils'
 pod 'MBProgressHUD'
 end
 
 target "On the MapTests" do
+pod 'FBSDKCoreKit'
+pod 'FBSDKLoginKit'
+#pod 'FBSDKShareKit'
 pod 'JJJUtils'
 pod 'MBProgressHUD'
 end
 
 target "On the MapUITests" do
+pod 'FBSDKCoreKit'
+pod 'FBSDKLoginKit'
+#pod 'FBSDKShareKit'
 pod 'JJJUtils'
 pod 'MBProgressHUD'
 end
