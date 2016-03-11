@@ -29,6 +29,7 @@ struct Constants {
         static let ApiHost    = "www.udacity.com"
         static let ApiPath    = "api"
         static let DataOffset = 5
+        static let SignupPage = "https://www.udacity.com/account/auth#!/signup"
     }
     
     // MARK: Udacity Methods

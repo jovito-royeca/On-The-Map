@@ -56,21 +56,36 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func refreshAction(sender: UIBarButtonItem) {
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
+        NetworkManager.sharedInstance().parseGetStudentLocations({ (results) in
+            performUIUpdatesOnMain {
+                self.students = NetworkManager.sharedInstance().students
+                self.addPinsToMap()
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                
+            }}, failure: { (error) in
+                performUIUpdatesOnMain {
+                    self.students = NetworkManager.sharedInstance().students
+                    self.addPinsToMap()
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
+                }
+        })
     }
     
     
     // MARK: Overrides
     override func viewDidLoad() {
         mapView.delegate = self
-        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
         if NetworkManager.sharedInstance().students.isEmpty {
             getStudentLocations()
         }
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
         
         students = NetworkManager.sharedInstance().students
         addPinsToMap()

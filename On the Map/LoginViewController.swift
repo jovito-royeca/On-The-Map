@@ -39,6 +39,7 @@ class LoginViewController: UIViewController {
     
     
     @IBAction func signupLabelAction(sender: UITapGestureRecognizer) {
+        UIApplication.sharedApplication().openURL(NSURL(string: Constants.Udacity.SignupPage)!)
     }
 }
 
