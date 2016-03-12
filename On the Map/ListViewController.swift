@@ -190,9 +190,6 @@ extension ListViewController: UITableViewDelegate {
                     }
                 }
             }
-        } else {
-            // to supress error message below, but we will not open the link because there is none
-            validLink = true
         }
         
         if !validLink {

@@ -225,11 +225,14 @@ class NetworkManager: NSObject {
     func facebookLogin(view: UIViewController, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let loginManager = FBSDKLoginManager()
         
+        // login first in Facebook to get access token
         loginManager.logInWithReadPermissions(["public_profile"], fromViewController:view, handler: { (result, error) in
             if let _ = error {
                 self.fail("Facebook Login Error", failure: failure)
                 
             } else {
+                
+                // then use the access token to sign in to Udacity
                 let httpMethod = Constants.Http.ActionPost
                 let urlString = "\(Constants.Udacity.ApiScheme)://\(Constants.Udacity.ApiHost)/\(Constants.Udacity.ApiPath)/\(Constants.UdacityMethods.Session)"
                 let headers = [Constants.Http.FieldAccept: Constants.Http.FieldAcceptValue,
@@ -262,7 +265,20 @@ class NetworkManager: NSObject {
         })
     }
     
-    // MARK: HTTP Ops
+    /*!
+        @method exec:httpMethod:urlString:headers:parameters:values:body:dataOffset:isJSON:success:failure:
+        @abstract Executes an HTTP request
+        @param httpMethod the http method i.e GET, POST, @see Constants.Http.ActionXXX
+        @param urlString the url of the API
+        @param headers HTTP headers
+        @param parameters HTTP parameters
+        @param values HTTP values
+        @param body HTTP body
+        @param dataOffset size to skip in the HTTP response @see Constants.Parse.DataOffset
+        @param isJSON check if response will be parsed as JSON using NSJSONSerialization
+        @param success block to handle response data
+        @param failure block to handle error message resturned
+    */
     func exec(httpMethod: String!,
                urlString: String!,
                  headers: [String:AnyObject]?,
@@ -314,7 +330,12 @@ class NetworkManager: NSObject {
             var parsedResult: AnyObject?
             
             guard (error == nil) else {
-                self.fail(error?.userInfo[NSLocalizedDescriptionKey] as! String, failure: failure)
+                if let errorMessage = error?.userInfo[NSLocalizedDescriptionKey] as? String {
+                    self.fail(errorMessage, failure: failure)
+                } else {
+                    self.fail("\(error)", failure: failure)
+                }
+                
                 return
             }
             
@@ -336,7 +357,7 @@ class NetworkManager: NSObject {
                     self.fail("Could not parse the data as JSON.", failure: failure)
                 }
             } else {
-                success(results: newData)
+                parsedResult = newData
             }
             
             guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
@@ -344,30 +365,14 @@ class NetworkManager: NSObject {
                 // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
                 if let errorMessage = parsedResult!["error"] as? String {
                     self.fail(errorMessage, failure: failure)
-                
+                    
                 } else {
                     self.fail("Your request returned a status code of \((response as? NSHTTPURLResponse)?.statusCode).", failure: failure)
                 }
                 return
             }
             
-            if let parsedResult = parsedResult {
-                success(results: parsedResult)
-            } else {
-                success(results: newData)
-            }
-            
-//            if isJSON {
-//                var parsedResult: AnyObject!
-//                do {
-//                    parsedResult = try NSJSONSerialization.JSONObjectWithData(newData!, options: .AllowFragments)
-//                    success(results: parsedResult)
-//                } catch {
-//                    self.fail("Could not parse the data as JSON.", failure: failure)
-//                }
-//            } else {
-//                success(results: newData)
-//            }
+            success(results: parsedResult)
         }
         
         task.resume()
