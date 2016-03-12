@@ -13,9 +13,6 @@ import FBSDKLoginKit
 
 class NetworkManager: NSObject {
     
-    var students = [StudentInformation]()
-    var currentStudent:StudentInformation?
-    var userData:UserData?
     var udacitySessionID:String?
     
     // MARK: Udacity API
@@ -69,9 +66,7 @@ class NetworkManager: NSObject {
         
         
         let preSuccess = { (results: AnyObject!) in
-            self.students = [StudentInformation]()
-            self.userData = nil
-            self.udacitySessionID = nil
+            DataManager.sharedInstance().resetData()
 
             let loginManager = FBSDKLoginManager()
             loginManager.logOut()
@@ -91,7 +86,7 @@ class NetworkManager: NSObject {
             // weird Xcode Swift warning
             // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
             if let user = results["user"] as? [String: AnyObject] {
-                self.userData = UserData(dictionary: user)
+                DataManager.sharedInstance().userData = UserData(dictionary: user)
                 success(results: results)
                 
             } else {
@@ -111,19 +106,19 @@ class NetworkManager: NSObject {
         let parameters = [Constants.Parse.SortKey: Constants.Parse.SortValue]
         
         let preSuccess = { (results: AnyObject!) in
-            self.students.removeAll()
+            DataManager.sharedInstance().students.removeAll()
             
             // weird Xcode Swift warning
             // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
             if let r = results["results"] as? [[String:AnyObject]] {
                 for dict in r {
                     let student = StudentInformation(dictionary: dict)
-                    self.students.append(student)
+                    DataManager.sharedInstance().students.append(student)
                  
                     // let's store the currently logged-in user from the results
                     if let uniqueKey = dict[Constants.ParseJSONKeys.UniqueKey] as? String {
-                        if uniqueKey == self.userData?.key {
-                            self.currentStudent = student
+                        if uniqueKey == DataManager.sharedInstance().userData?.key {
+                            DataManager.sharedInstance().currentStudent = student
                         }
                     }
                 }
@@ -141,7 +136,7 @@ class NetworkManager: NSObject {
             Constants.Parse.FieldAppKey: Constants.Parse.FieldAppKeyValue,
             Constants.Http.FieldContentType: Constants.Http.FieldContentTypeValue]
         
-        let body = "{\"\(Constants.ParseJSONKeys.UniqueKey)\": \"\(userData!.key!)\", \"\(Constants.ParseJSONKeys.FirstName)\": \"\(userData!.firstName!)\", \"\(Constants.ParseJSONKeys.LastName)\": \"\(userData!.lastName!)\", \"\(Constants.ParseJSONKeys.MapString)\": \"\(mapString)\", \"\(Constants.ParseJSONKeys.MediaURL)\": \"\(mediaURL)\", \"\(Constants.ParseJSONKeys.Latitude)\": \(location.latitude), \"\(Constants.ParseJSONKeys.Longitude)\": \(location.longitude)}"
+        let body = "{\"\(Constants.ParseJSONKeys.UniqueKey)\": \"\(DataManager.sharedInstance().userData!.key!)\", \"\(Constants.ParseJSONKeys.FirstName)\": \"\(DataManager.sharedInstance().userData!.firstName!)\", \"\(Constants.ParseJSONKeys.LastName)\": \"\(DataManager.sharedInstance().userData!.lastName!)\", \"\(Constants.ParseJSONKeys.MapString)\": \"\(mapString)\", \"\(Constants.ParseJSONKeys.MediaURL)\": \"\(mediaURL)\", \"\(Constants.ParseJSONKeys.Latitude)\": \(location.latitude), \"\(Constants.ParseJSONKeys.Longitude)\": \(location.longitude)}"
         
         let preSuccess = { (results: AnyObject!) in
             self.parseGetStudentLocations(success, failure: failure)
@@ -152,7 +147,7 @@ class NetworkManager: NSObject {
     
     func parseUpdateStudentLocation(location: CLLocationCoordinate2D, mapString: String, mediaURL: String, success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let httpMethod = Constants.Http.ActionPut
-        let urlString = "\(Constants.Parse.ApiScheme)://\(Constants.Parse.ApiHost)/\(Constants.Parse.ApiPath)/\(Constants.ParseMethods.StudentLocation)/\(self.currentStudent!.objectId!)"
+        let urlString = "\(Constants.Parse.ApiScheme)://\(Constants.Parse.ApiHost)/\(Constants.Parse.ApiPath)/\(Constants.ParseMethods.StudentLocation)/\(DataManager.sharedInstance().currentStudent!.objectId!)"
         let headers = [Constants.Parse.FieldAppID: Constants.Parse.FieldAppIDValue,
             Constants.Parse.FieldAppKey: Constants.Parse.FieldAppKeyValue,
             Constants.Http.FieldContentType: Constants.Http.FieldContentTypeValue]
@@ -160,27 +155,24 @@ class NetworkManager: NSObject {
         let body = "{\"\(Constants.ParseJSONKeys.MapString)\": \"\(mapString)\", \"\(Constants.ParseJSONKeys.MediaURL)\": \"\(mediaURL)\", \"\(Constants.ParseJSONKeys.Latitude)\": \(location.latitude), \"\(Constants.ParseJSONKeys.Longitude)\": \(location.longitude)}"
         
         let preSuccess = { (results: AnyObject!) in
-            if let _ = self.currentStudent {
+            if let _ = DataManager.sharedInstance().currentStudent {
                 // update the currentStudent information
-                self.currentStudent?.latitude = location.latitude
-                self.currentStudent?.longitude = location.longitude
-                self.currentStudent?.mapString = mapString
-                self.currentStudent?.mediaURL = NSURL(string: mediaURL)
+                DataManager.sharedInstance().updateCurrentStudent(location.latitude, longitude: location.longitude, mapString: mapString, mediaURL: NSURL(string: mediaURL)!)
                 var index = 0
                 var found = false
                 
                 // update the student information in students
-                for student in self.students {
-                    if student.uniqueKey == self.currentStudent?.uniqueKey {
+                for student in DataManager.sharedInstance().students {
+                    if student.uniqueKey == DataManager.sharedInstance().currentStudent?.uniqueKey {
                         found = true
                         break
                     }
                     index++
                 }
                 if found {
-                    self.students.removeAtIndex(index)
+                    DataManager.sharedInstance().students.removeAtIndex(index)
                 }
-                self.students.insert(self.currentStudent!, atIndex: 0)
+                DataManager.sharedInstance().students.insert(DataManager.sharedInstance().currentStudent!, atIndex: 0)
             }
             success(results: results)
         }
@@ -190,30 +182,30 @@ class NetworkManager: NSObject {
     
     func parseDeleteStudentLocation(success: (results: AnyObject!) -> Void, failure: (error: NSError?) -> Void) {
         let httpMethod = Constants.Http.ActionDelete
-        let urlString = "\(Constants.Parse.ApiScheme)://\(Constants.Parse.ApiHost)/\(Constants.Parse.ApiPath)/\(Constants.ParseMethods.StudentLocation)/\(self.currentStudent!.objectId!)"
+        let urlString = "\(Constants.Parse.ApiScheme)://\(Constants.Parse.ApiHost)/\(Constants.Parse.ApiPath)/\(Constants.ParseMethods.StudentLocation)/\(DataManager.sharedInstance().currentStudent!.objectId!)"
         let headers = [Constants.Parse.FieldAppID: Constants.Parse.FieldAppIDValue,
             Constants.Parse.FieldAppKey: Constants.Parse.FieldAppKeyValue,
             Constants.Http.FieldContentType: Constants.Http.FieldContentTypeValue]
         
         let preSuccess = { (results: AnyObject!) in
-            if let _ = self.currentStudent {
+            if let _ = DataManager.sharedInstance().currentStudent {
                 var index = 0
                 var found = false
                 
                 // remove the student information in students
-                for student in self.students {
-                    if student.uniqueKey == self.currentStudent?.uniqueKey {
+                for student in DataManager.sharedInstance().students {
+                    if student.uniqueKey == DataManager.sharedInstance().currentStudent?.uniqueKey {
                         found = true
                         break
                     }
                     index++
                 }
                 if found {
-                    self.students.removeAtIndex(index)
+                    DataManager.sharedInstance().students.removeAtIndex(index)
                 }
                 
                 // remove the current student
-                self.currentStudent = nil
+                DataManager.sharedInstance().currentStudent = nil
             }
             success(results: results)
         }

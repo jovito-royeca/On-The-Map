@@ -57,7 +57,7 @@ class LocationFinderViewController: UIViewController {
             }
             
             MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            if let _ = NetworkManager.sharedInstance().currentStudent {
+            if let _ = DataManager.sharedInstance().currentStudent {
                 NetworkManager.sharedInstance().parseUpdateStudentLocation(self.currentLocation!, mapString: self.currentMapString!, mediaURL: link.absoluteString, success: success, failure: failure)
             } else {
                 NetworkManager.sharedInstance().parseCreateStudentLocation(self.currentLocation!, mapString: self.currentMapString!, mediaURL: link.absoluteString, success: success, failure: failure)
@@ -80,7 +80,7 @@ class LocationFinderViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let currentStudent = NetworkManager.sharedInstance().currentStudent {
+        if let currentStudent = DataManager.sharedInstance().currentStudent {
             if let latitude = currentStudent.latitude, let longitude = currentStudent.longitude {
                 currentLocation = CLLocationCoordinate2DMake(latitude, longitude)
                 
@@ -239,9 +239,10 @@ extension LocationFinderViewController {
         mapView.userInteractionEnabled = enabled
         linkTextField.enabled = enabled
         
-        searchBar.alpha     = alpha
-        mapView.alpha       = alpha
+        searchBar.alpha = alpha
+        mapView.alpha = alpha
         linkTextField.alpha = alpha
+        view.alpha = alpha
     }
 }
 

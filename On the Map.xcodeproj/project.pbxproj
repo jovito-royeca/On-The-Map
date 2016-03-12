@@ -11,6 +11,9 @@
 		8C03252D1C92732D00F90528 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C03252C1C92732D00F90528 /* UserData.swift */; };
 		8C03252E1C92732D00F90528 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C03252C1C92732D00F90528 /* UserData.swift */; };
 		8C03252F1C92732D00F90528 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C03252C1C92732D00F90528 /* UserData.swift */; };
+		8C4A592C1C944C6D004784DF /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4A592B1C944C6D004784DF /* DataManager.swift */; };
+		8C4A592D1C944C6D004784DF /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4A592B1C944C6D004784DF /* DataManager.swift */; };
+		8C4A592E1C944C6D004784DF /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4A592B1C944C6D004784DF /* DataManager.swift */; };
 		8C9AD69E1C91ECA5005E7482 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9AD69D1C91ECA5005E7482 /* ListTableViewCell.swift */; };
 		8C9AD69F1C91ECA5005E7482 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9AD69D1C91ECA5005E7482 /* ListTableViewCell.swift */; };
 		8C9AD6A01C91ECA5005E7482 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9AD69D1C91ECA5005E7482 /* ListTableViewCell.swift */; };
@@ -72,6 +75,7 @@
 		682FB8BC80126051880C8079 /* Pods-On the MapUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On the MapUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-On the MapUITests/Pods-On the MapUITests.release.xcconfig"; sourceTree = "<group>"; };
 		6E9B8B7F512F0B8AB4D35699 /* Pods_On_the_Map.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_On_the_Map.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C03252C1C92732D00F90528 /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		8C4A592B1C944C6D004784DF /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		8C9AD69D1C91ECA5005E7482 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		8CB3651F1C8E76FA00725AAC /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8CB365281C8E7FBC00725AAC /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -188,6 +192,7 @@
 		8CB365271C8E7B2500725AAC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				8C4A592B1C944C6D004784DF /* DataManager.swift */,
 				8CB3653C1C8ED77900725AAC /* GCDBlackBox.swift */,
 				8CB365381C8EAAEC00725AAC /* NetworkManager.swift */,
 			);
@@ -525,6 +530,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8CB3653D1C8ED77900725AAC /* GCDBlackBox.swift in Sources */,
+				8C4A592C1C944C6D004784DF /* DataManager.swift in Sources */,
 				8CB3652D1C8E819200725AAC /* StudentInformation.swift in Sources */,
 				8CE3B4F31C9011EC0083189A /* LocationFinderViewController.swift in Sources */,
 				8CB365291C8E7FBC00725AAC /* LoginViewController.swift in Sources */,
@@ -543,6 +549,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8CB3653E1C8ED77900725AAC /* GCDBlackBox.swift in Sources */,
+				8C4A592D1C944C6D004784DF /* DataManager.swift in Sources */,
 				8CB3652E1C8E819200725AAC /* StudentInformation.swift in Sources */,
 				8CE3B4F41C9011EC0083189A /* LocationFinderViewController.swift in Sources */,
 				8CB3652A1C8E7FBC00725AAC /* LoginViewController.swift in Sources */,
@@ -561,6 +568,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8CB3653F1C8ED77900725AAC /* GCDBlackBox.swift in Sources */,
+				8C4A592E1C944C6D004784DF /* DataManager.swift in Sources */,
 				8CB3652F1C8E819200725AAC /* StudentInformation.swift in Sources */,
 				8CE3B4F51C9011EC0083189A /* LocationFinderViewController.swift in Sources */,
 				8CB3652B1C8E7FBC00725AAC /* LoginViewController.swift in Sources */,

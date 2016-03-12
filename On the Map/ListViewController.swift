@@ -14,7 +14,6 @@ class ListViewController: UIViewController {
 
     // MARK: Properties
     @IBOutlet weak var tabeView: UITableView!
-    var students:[StudentInformation]?
     
     // MARK: Actions
     @IBAction func logoutAction(sender: UIBarButtonItem) {
@@ -34,7 +33,7 @@ class ListViewController: UIViewController {
     
     
     @IBAction func pinAction(sender: UIBarButtonItem) {
-        if let currentStudent = NetworkManager.sharedInstance().currentStudent {
+        if let currentStudent = DataManager.sharedInstance().currentStudent {
             let message = "User \"\(currentStudent.firstName!) \(currentStudent.lastName!)\" Has Already Posted a Student Location. Would You Like to Overwrite Their Location?"
             
             let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
@@ -62,13 +61,11 @@ class ListViewController: UIViewController {
         
         NetworkManager.sharedInstance().parseGetStudentLocations({ (results) in
             performUIUpdatesOnMain {
-                self.students = NetworkManager.sharedInstance().students
                 self.tabeView.reloadData()
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
                 
             }}, failure: { (error) in
                 performUIUpdatesOnMain {
-                    self.students = NetworkManager.sharedInstance().students
                     self.tabeView.reloadData()
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
@@ -87,7 +84,6 @@ class ListViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        students = NetworkManager.sharedInstance().students
         tabeView.reloadData()
     }
     
@@ -97,13 +93,11 @@ class ListViewController: UIViewController {
         
         NetworkManager.sharedInstance().parseDeleteStudentLocation({ (results) in
             performUIUpdatesOnMain {
-                self.students = NetworkManager.sharedInstance().students
                 self.tabeView.reloadData()
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
                 
             }}, failure: { (error) in
                 performUIUpdatesOnMain {
-                    self.students = NetworkManager.sharedInstance().students
                     self.tabeView.reloadData()
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
@@ -116,7 +110,7 @@ class ListViewController: UIViewController {
 extension ListViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        let student = students![indexPath.row]
+        let student = DataManager.sharedInstance().students[indexPath.row]
 
         let cell = tableView.dequeueReusableCellWithIdentifier("listTableViewCell", forIndexPath: indexPath) as! ListTableViewCell
         cell.nameLabel.text = "\(student.firstName!) \(student.lastName!)"
@@ -140,13 +134,13 @@ extension ListViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return students!.count
+        return DataManager.sharedInstance().students.count
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        let student = students![indexPath.row]
+        let student = DataManager.sharedInstance().students[indexPath.row]
         
-        if student.uniqueKey! == NetworkManager.sharedInstance().currentStudent?.uniqueKey {
+        if student.uniqueKey! == DataManager.sharedInstance().currentStudent?.uniqueKey {
             return true
         }
         
@@ -172,7 +166,7 @@ extension ListViewController: UITableViewDataSource {
 
 extension ListViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let student = students![indexPath.row]
+        let student = DataManager.sharedInstance().students[indexPath.row]
         var validLink = false
         
         if let mediaURL = student.mediaURL {

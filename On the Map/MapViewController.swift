@@ -16,7 +16,6 @@ class MapViewController: UIViewController {
 
     // Mark: Properties
     @IBOutlet weak var mapView: MKMapView!
-    var students:[StudentInformation]?
     
     // MARK: Actions
     @IBAction func logoutAction(sender: UIBarButtonItem) {
@@ -35,7 +34,7 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func pinAction(sender: UIBarButtonItem) {
-        if let currentStudent = NetworkManager.sharedInstance().currentStudent {
+        if let currentStudent = DataManager.sharedInstance().currentStudent {
             let message = "User \"\(currentStudent.firstName!) \(currentStudent.lastName!)\" Has Already Posted a Student Location. Would You Like to Overwrite Their Location?"
             
             let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
@@ -62,13 +61,11 @@ class MapViewController: UIViewController {
         
         NetworkManager.sharedInstance().parseGetStudentLocations({ (results) in
             performUIUpdatesOnMain {
-                self.students = NetworkManager.sharedInstance().students
                 self.addPinsToMap()
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
                 
             }}, failure: { (error) in
                 performUIUpdatesOnMain {
-                    self.students = NetworkManager.sharedInstance().students
                     self.addPinsToMap()
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
@@ -85,11 +82,10 @@ class MapViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        if NetworkManager.sharedInstance().students.isEmpty {
+        if DataManager.sharedInstance().students.isEmpty {
             getStudentLocations()
             
         } else {
-            students = NetworkManager.sharedInstance().students
             addPinsToMap()
         }
     }
@@ -101,7 +97,7 @@ class MapViewController: UIViewController {
             mapView.removeAnnotation(ann)
         }
         
-        for student in students! {
+        for student in DataManager.sharedInstance().students {
             if let latitude = student.latitude, let longitude = student.longitude {
                 let location = CLLocationCoordinate2DMake(latitude, longitude)
                 let point = MKPointAnnotation()
@@ -112,7 +108,7 @@ class MapViewController: UIViewController {
                 }
                 mapView.addAnnotation(point)
                 
-                if student.uniqueKey == NetworkManager.sharedInstance().currentStudent?.uniqueKey {
+                if student.uniqueKey == DataManager.sharedInstance().currentStudent?.uniqueKey {
                     mapView.selectAnnotation(point, animated: false)
                 }
             }
@@ -124,13 +120,11 @@ class MapViewController: UIViewController {
         
         NetworkManager.sharedInstance().parseGetStudentLocations({ (results) in
             performUIUpdatesOnMain {
-                self.students = NetworkManager.sharedInstance().students
                 self.addPinsToMap()
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
                 
             }}, failure: { (error) in
                 performUIUpdatesOnMain {
-                    self.students = NetworkManager.sharedInstance().students
                     self.addPinsToMap()
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     JJJUtil.alertWithTitle("Error", andMessage:"\(error!.userInfo[NSLocalizedDescriptionKey]!)")
