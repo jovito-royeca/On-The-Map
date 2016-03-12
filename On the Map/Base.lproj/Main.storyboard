@@ -116,11 +116,8 @@
                                 <exclude reference="zkg-dg-MdQ"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="u2r-15-iZh"/>
                                 <exclude reference="3k3-i4-Z5h"/>
                                 <exclude reference="Ugx-pr-jGA"/>
-                                <exclude reference="h4S-XJ-kYH"/>
-                                <exclude reference="oau-we-wgw"/>
                                 <exclude reference="I7c-E2-ijW"/>
                                 <exclude reference="fNW-YG-VXI"/>
                                 <exclude reference="mkg-7s-Unw"/>
@@ -129,12 +126,15 @@
                                 <exclude reference="Zpo-lV-caA"/>
                                 <exclude reference="f4C-Ee-d9p"/>
                                 <exclude reference="i9Y-yi-w2e"/>
-                                <exclude reference="2Wk-Dh-5MZ"/>
-                                <exclude reference="OTq-pY-zoq"/>
-                                <exclude reference="k7r-vg-tQ8"/>
                                 <exclude reference="bcL-xR-SPx"/>
                                 <exclude reference="sZZ-PH-8At"/>
                                 <exclude reference="uIF-UY-0YJ"/>
+                                <exclude reference="2Wk-Dh-5MZ"/>
+                                <exclude reference="OTq-pY-zoq"/>
+                                <exclude reference="k7r-vg-tQ8"/>
+                                <exclude reference="h4S-XJ-kYH"/>
+                                <exclude reference="oau-we-wgw"/>
+                                <exclude reference="u2r-15-iZh"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -148,11 +148,8 @@
                                 <include reference="zkg-dg-MdQ"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="u2r-15-iZh"/>
                                 <include reference="3k3-i4-Z5h"/>
                                 <include reference="Ugx-pr-jGA"/>
-                                <include reference="h4S-XJ-kYH"/>
-                                <include reference="oau-we-wgw"/>
                                 <include reference="I7c-E2-ijW"/>
                                 <include reference="fNW-YG-VXI"/>
                                 <include reference="mkg-7s-Unw"/>
@@ -161,12 +158,15 @@
                                 <include reference="Zpo-lV-caA"/>
                                 <include reference="f4C-Ee-d9p"/>
                                 <include reference="i9Y-yi-w2e"/>
-                                <include reference="2Wk-Dh-5MZ"/>
-                                <include reference="OTq-pY-zoq"/>
-                                <include reference="k7r-vg-tQ8"/>
                                 <include reference="bcL-xR-SPx"/>
                                 <include reference="sZZ-PH-8At"/>
                                 <include reference="uIF-UY-0YJ"/>
+                                <include reference="2Wk-Dh-5MZ"/>
+                                <include reference="OTq-pY-zoq"/>
+                                <include reference="k7r-vg-tQ8"/>
+                                <include reference="h4S-XJ-kYH"/>
+                                <include reference="oau-we-wgw"/>
+                                <include reference="u2r-15-iZh"/>
                             </mask>
                         </variation>
                     </view>
@@ -446,7 +446,7 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="mWc-St-zkr">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                             </mapView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a Link to Share Here" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EMj-NE-fYT">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a link to share here." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EMj-NE-fYT">
                                 <rect key="frame" x="-25" y="-30" width="97" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="done"/>

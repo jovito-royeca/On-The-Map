@@ -40,9 +40,15 @@ struct Constants {
     
     // MARK: Udacity JSON Keys
     struct UdacityJSONKeys {
+        static let Username  = "username"
+        static let Password  = "password"
+        static let Session   = "session"
+        static let Account   = "account"
+        static let Key       = "key"
+        static let ID        = "id"
         static let FirstName = "first_name"
         static let LastName  = "last_name"
-        static let Key = "key"
+        
     }
     
     // MARK: Facebook

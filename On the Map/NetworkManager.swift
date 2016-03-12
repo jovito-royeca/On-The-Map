@@ -24,21 +24,21 @@ class NetworkManager: NSObject {
         let urlString = "\(Constants.Udacity.ApiScheme)://\(Constants.Udacity.ApiHost)/\(Constants.Udacity.ApiPath)/\(Constants.UdacityMethods.Session)"
         let headers = [Constants.Http.FieldAccept: Constants.Http.FieldAcceptValue,
                        Constants.Http.FieldContentType: Constants.Http.FieldContentTypeValue]
-        let body = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}"
+        let body = "{\"udacity\": {\"\(Constants.UdacityJSONKeys.Username)\": \"\(username)\", \"\(Constants.UdacityJSONKeys.Password)\": \"\(password)\"}}"
         
         let preSuccess = { (results: AnyObject!) in
             // weird Xcode Swift warning
             // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
-            if let session = results["session"] as? [String: AnyObject] {
-                self.udacitySessionID = session["id"] as? String
+            if let session = results[Constants.UdacityJSONKeys.Session] as? [String: AnyObject] {
+                self.udacitySessionID = session[Constants.UdacityJSONKeys.ID] as? String
             } else {
                 self.fail("session key not found", failure: failure)
             }
             
             // weird Xcode Swift warning
             // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
-            if let account = results["account"] as? [String: AnyObject] {
-                let key = account["key"] as? String
+            if let account = results[Constants.UdacityJSONKeys.Account] as? [String: AnyObject] {
+                let key = account[Constants.UdacityJSONKeys.Key] as? String
                 
                 self.udacityGetUserData(key!, success: success, failure: failure);
                 
@@ -310,14 +310,11 @@ class NetworkManager: NSObject {
         let session = NSURLSession.sharedSession()
 
         let task = session.dataTaskWithRequest(request) { data, response, error in
-
+            var newData: NSData?
+            var parsedResult: AnyObject?
+            
             guard (error == nil) else {
                 self.fail(error?.userInfo[NSLocalizedDescriptionKey] as! String, failure: failure)
-                return
-            }
-            
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                self.fail("Your request returned a status code other than 2xx!", failure: failure)
                 return
             }
             
@@ -325,9 +322,6 @@ class NetworkManager: NSObject {
                 self.fail("No data was returned by the request!", failure: failure)
                 return
             }
-         
-            
-            var newData: NSData?
             
             if dataOffset > 0 {
                 newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
@@ -336,16 +330,44 @@ class NetworkManager: NSObject {
             }
             
             if isJSON {
-                var parsedResult: AnyObject!
                 do {
                     parsedResult = try NSJSONSerialization.JSONObjectWithData(newData!, options: .AllowFragments)
-                    success(results: parsedResult)
                 } catch {
                     self.fail("Could not parse the data as JSON.", failure: failure)
                 }
             } else {
                 success(results: newData)
             }
+            
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                // weird Xcode Swift warning
+                // http://stackoverflow.com/questions/32715160/xcode-7-strange-cast-error-that-refers-to-xcuielement
+                if let errorMessage = parsedResult!["error"] as? String {
+                    self.fail(errorMessage, failure: failure)
+                
+                } else {
+                    self.fail("Your request returned a status code of \((response as? NSHTTPURLResponse)?.statusCode).", failure: failure)
+                }
+                return
+            }
+            
+            if let parsedResult = parsedResult {
+                success(results: parsedResult)
+            } else {
+                success(results: newData)
+            }
+            
+//            if isJSON {
+//                var parsedResult: AnyObject!
+//                do {
+//                    parsedResult = try NSJSONSerialization.JSONObjectWithData(newData!, options: .AllowFragments)
+//                    success(results: parsedResult)
+//                } catch {
+//                    self.fail("Could not parse the data as JSON.", failure: failure)
+//                }
+//            } else {
+//                success(results: newData)
+//            }
         }
         
         task.resume()
