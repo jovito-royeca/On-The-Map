@@ -8,7 +8,7 @@
 
 import Foundation
 
-class DataManager: NSObject {
+final class DataManager: NSObject {
     var students = [StudentInformation]()
     var currentStudent:StudentInformation?
     var userData:UserData?

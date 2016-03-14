@@ -11,7 +11,7 @@ import UIKit
 import CoreLocation
 import FBSDKLoginKit
 
-class NetworkManager: NSObject {
+final class NetworkManager: NSObject {
     
     var udacitySessionID:String?
     
