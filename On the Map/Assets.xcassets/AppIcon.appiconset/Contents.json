@@ -3,25 +3,24 @@
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "OnTheMap_29.png",
+      "filename" : "OnTheMap_58.png",
       "scale" : "2x"
     },
     {
-      "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "OnTheMap_58.png",
+      "size" : "29x29",
       "scale" : "3x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "OnTheMap_40.png",
+      "filename" : "OnTheMap_80.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "OnTheMap_80.png",
+      "filename" : "OnTheMap_120.png",
       "scale" : "3x"
     },
     {

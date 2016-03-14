@@ -11,7 +11,7 @@
         <!--Login View Controller-->
         <scene sceneID="Ck8-4m-vuV">
             <objects>
-                <viewController id="Xi5-ue-fOH" customClass="LoginViewController" customModule="On_the_Map" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginVIewController" id="Xi5-ue-fOH" customClass="LoginViewController" customModule="On_the_Map" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kpU-01-MPr"/>
                         <viewControllerLayoutGuide type="bottom" id="MNF-hT-0gd"/>
@@ -278,13 +278,11 @@
                                                     <exclude reference="jh4-Ro-CEO"/>
                                                 </mask>
                                                 <mask key="constraints">
+                                                    <exclude reference="Cq7-Hr-kQW"/>
+                                                    <exclude reference="h3f-8X-BQj"/>
                                                     <exclude reference="7SC-O0-q6t"/>
                                                     <exclude reference="8jS-Xa-RDm"/>
                                                     <exclude reference="L9s-9h-lqq"/>
-                                                    <exclude reference="GEb-1q-F1C"/>
-                                                    <exclude reference="dNP-mZ-uFu"/>
-                                                    <exclude reference="iSc-xq-I7l"/>
-                                                    <exclude reference="ljy-e1-r7O"/>
                                                     <exclude reference="eGj-rA-TfJ"/>
                                                     <exclude reference="mlY-eJ-je6"/>
                                                     <exclude reference="tAo-aE-bJK"/>
@@ -293,8 +291,10 @@
                                                     <exclude reference="NXS-SK-o6Y"/>
                                                     <exclude reference="RS8-jt-byV"/>
                                                     <exclude reference="ghy-87-2yC"/>
-                                                    <exclude reference="Cq7-Hr-kQW"/>
-                                                    <exclude reference="h3f-8X-BQj"/>
+                                                    <exclude reference="GEb-1q-F1C"/>
+                                                    <exclude reference="dNP-mZ-uFu"/>
+                                                    <exclude reference="iSc-xq-I7l"/>
+                                                    <exclude reference="ljy-e1-r7O"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -306,13 +306,11 @@
                                                     <include reference="jh4-Ro-CEO"/>
                                                 </mask>
                                                 <mask key="constraints">
+                                                    <include reference="Cq7-Hr-kQW"/>
+                                                    <include reference="h3f-8X-BQj"/>
                                                     <include reference="7SC-O0-q6t"/>
                                                     <include reference="8jS-Xa-RDm"/>
                                                     <include reference="L9s-9h-lqq"/>
-                                                    <include reference="GEb-1q-F1C"/>
-                                                    <include reference="dNP-mZ-uFu"/>
-                                                    <include reference="iSc-xq-I7l"/>
-                                                    <include reference="ljy-e1-r7O"/>
                                                     <include reference="eGj-rA-TfJ"/>
                                                     <include reference="mlY-eJ-je6"/>
                                                     <include reference="tAo-aE-bJK"/>
@@ -321,8 +319,10 @@
                                                     <include reference="NXS-SK-o6Y"/>
                                                     <include reference="RS8-jt-byV"/>
                                                     <include reference="ghy-87-2yC"/>
-                                                    <include reference="Cq7-Hr-kQW"/>
-                                                    <include reference="h3f-8X-BQj"/>
+                                                    <include reference="GEb-1q-F1C"/>
+                                                    <include reference="dNP-mZ-uFu"/>
+                                                    <include reference="iSc-xq-I7l"/>
+                                                    <include reference="ljy-e1-r7O"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
