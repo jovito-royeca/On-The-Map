@@ -183,7 +183,7 @@ class LocationFinderViewController: UIViewController {
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
                 
                 if let error = error {
-                    JJJUtil.alertWithTitle("Error", andMessage:"\(error)")
+                    JJJUtil.alertWithTitle("Error", andMessage:"Error in geocoding the location.\(error)")
                 } else {
                     if let placemarks = placemarks {
                         if let pm = placemarks.first {
@@ -265,7 +265,7 @@ extension LocationFinderViewController : UISearchBarDelegate {
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     
                     if let error = error {
-                        JJJUtil.alertWithTitle("Error", andMessage:"\(error)")
+                        JJJUtil.alertWithTitle("Error", andMessage:"Error in geocoding the address.\n\(error)")
                         
                     } else {
                         if let placemarks = placemarks {
